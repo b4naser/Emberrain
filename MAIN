@@ -1,0 +1,59 @@
+#include "stdafx.h"
+#include "Map.h"
+#include <Windows.h>
+
+int main()
+{
+	int y = 15, x = 15;
+	Map map1;
+	map1.show();
+	//bool condition = false;
+
+	while (true) {
+
+		if (GetAsyncKeyState(VK_UP)){
+			if (y > 1 && y <= 18) {
+				y--;
+				if (map1.if_empty_space(x, y)) {
+					map1.show(y, x);
+				}
+				else y++;
+			}
+		}
+		else if (GetAsyncKeyState(VK_DOWN)) {
+			if (y >= 1 && y < 18) {
+				y++;
+				if (map1.if_empty_space(x, y)) {
+					map1.show(y, x);
+				}
+				else y--;
+			}
+			
+		}
+		else if (GetAsyncKeyState(VK_LEFT)) {
+			if (x > 1 && x <= 88) {
+					x--;
+					if (map1.if_empty_space(x, y)) {
+						map1.show(y, x);
+					}
+					else x++;
+			}
+
+		}
+		else if (GetAsyncKeyState(VK_RIGHT)) {
+			if (x >= 1 && x < 88) {
+					x++;
+					if (map1.if_empty_space(x, y)) {
+						map1.show(y, x);
+					}
+					else x--;
+			}
+
+		}
+
+	}
+	getchar();
+	getchar();
+
+    return 0;
+}

@@ -65,9 +65,9 @@ bool Map::ifEmptySpace(int y, int x)
 
 void Map::playerMoveRight(int y, int x)
 {
-	
-	curPosition.X = 130;
-	curPosition.Y = 1;
+
+	curPosition.X = x;
+	curPosition.Y = y;
 	tab[y][x] = '@';
 	SetConsoleCursorPosition(hConsole, curPosition);
 	cout << tab[y][x];
@@ -78,28 +78,25 @@ void Map::playerMoveLeft(int y, int x)
 {
 	curPosition.X = x;
 	curPosition.Y = y;
-	int temp = x + 1;
-	tab[y][temp] = ' ';
 	tab[y][x] = '@';
 	SetConsoleCursorPosition(hConsole, curPosition);
+	cout << tab[y][x];
 }
 void Map::playerMoveUp(int y, int x)
 {
 	curPosition.X = x;
 	curPosition.Y = y;
-	int temp = y - 1;
-	tab[y][temp] = ' ';
 	tab[y][x] = '@';
 	SetConsoleCursorPosition(hConsole, curPosition);
+	cout << tab[y][x];
 }
 void Map::playerMoveDown(int y, int x)
 {
 	curPosition.X = x;
 	curPosition.Y = y;
-	int temp = y + 1;
-	tab[y][temp] = ' ';
 	tab[y][x] = '@';
 	SetConsoleCursorPosition(hConsole, curPosition);
+	cout << tab[y][x];
 }
 
 int Map::getMapX()
@@ -110,4 +107,5 @@ int Map::getMapY()
 {
 	return CORD_Y-2;
 }
+
 

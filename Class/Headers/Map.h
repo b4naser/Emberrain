@@ -5,7 +5,8 @@ class Map
 private:
 	CONST int startX = 30;
 	CONST int startY = 30;
-
+	CONST int sleepTimeBaybe = 100;
+	
 	static CONST int CORD_X = 150;
 	static CONST int CORD_Y = 40;
 	char tab[CORD_Y][CORD_X];

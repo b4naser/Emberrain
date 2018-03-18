@@ -15,7 +15,6 @@ Map::~Map()
 
 void Map::show()
 {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	for (int y = 0;y < CORD_Y; y++)
 	{
@@ -29,7 +28,6 @@ void Map::show()
 
 void Map::fillTable()
 {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	for (int y = 0; y < CORD_Y; y++)
 	{
@@ -65,10 +63,22 @@ bool Map::ifEmptySpace(int y, int x)
 
 void Map::playerMoveRight(int y, int x)
 {
+	int temp = x - 1;
+
+	curPosition.X = temp;
+	curPosition.Y = y;
+
+
+	tab[y][temp] = '.';
+	SetConsoleCursorPosition(hConsole, curPosition);
+
+	cout << tab[y][temp];
 
 	curPosition.X = x;
 	curPosition.Y = y;
+
 	tab[y][x] = '@';
+	_sleep(150);
 	SetConsoleCursorPosition(hConsole, curPosition);
 	cout << tab[y][x];
 
@@ -76,25 +86,64 @@ void Map::playerMoveRight(int y, int x)
 
 void Map::playerMoveLeft(int y, int x)
 {
+	int temp = x + 1;
+
+	curPosition.X = temp;
+	curPosition.Y = y;
+
+
+	tab[y][temp] = '.';
+	SetConsoleCursorPosition(hConsole, curPosition);
+
+	cout << tab[y][temp];
+
 	curPosition.X = x;
 	curPosition.Y = y;
+
 	tab[y][x] = '@';
+	_sleep(150);
 	SetConsoleCursorPosition(hConsole, curPosition);
 	cout << tab[y][x];
 }
 void Map::playerMoveUp(int y, int x)
 {
+	int temp = y + 1;
+
+	curPosition.X = x;
+	curPosition.Y = temp;
+
+
+	tab[temp][x] = '.';
+	SetConsoleCursorPosition(hConsole, curPosition);
+
+	cout << tab[y][temp];
+
 	curPosition.X = x;
 	curPosition.Y = y;
+
 	tab[y][x] = '@';
+	_sleep(150);
 	SetConsoleCursorPosition(hConsole, curPosition);
 	cout << tab[y][x];
 }
 void Map::playerMoveDown(int y, int x)
 {
+	int temp = y - 1;
+
+	curPosition.X = x;
+	curPosition.Y = temp;
+
+
+	tab[temp][x] = '.';
+	SetConsoleCursorPosition(hConsole, curPosition);
+
+	cout << tab[y][temp];
+
 	curPosition.X = x;
 	curPosition.Y = y;
+
 	tab[y][x] = '@';
+	_sleep(150);
 	SetConsoleCursorPosition(hConsole, curPosition);
 	cout << tab[y][x];
 }
@@ -107,5 +156,4 @@ int Map::getMapY()
 {
 	return CORD_Y-2;
 }
-
 

@@ -11,7 +11,7 @@ Minotaur::Minotaur()
 	stun = 5;  //szansa na stuna
 }
 
-bool Minotaur::minotaurStun()  // zwraca prawde jesli jest mana  // zwraca falsz jesli nie ma many lub nie wylosowalo sie
+bool Minotaur::minotaurStun() 
 {
 		if ((std::rand() % 100) < stun) return true;
 		else							return false;

@@ -13,7 +13,7 @@ Vampire::Vampire()
 
 bool Vampire::CallOfBlood() //funckja przywracajaca zdrowie wampirowi (równość ataku vampira)
 {
-	if ((std::rand() % 100) < LifeSteal) return true;
+	if ((std::rand() % 100) <= LifeSteal) return true;
 	else				     return false;
 }
 

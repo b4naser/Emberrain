@@ -13,7 +13,7 @@ Minotaur::Minotaur()
 
 bool Minotaur::minotaurStun() 
 {
-		if ((std::rand() % 100) < stun) return true;
+		if ((std::rand() % 100) <= stun) return true;
 		else							return false;
 }
 

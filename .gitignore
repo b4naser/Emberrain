@@ -32,7 +32,6 @@
 *.app
 
 # Visual Files And Directories
-*.vcxproj.filters
 *.vcxproj.user
 .vs
 Debug

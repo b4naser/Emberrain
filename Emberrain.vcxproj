@@ -99,15 +99,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Emberrain.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fight.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Minotaur.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomMap.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Vampire.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fight.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Minotaur.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RandomMap.h" />
+    <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="Vampire.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

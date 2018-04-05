@@ -15,8 +15,9 @@ private:
 	const int MAP_WIDTH;
 	const int MAP_HEIGHT;
 	std::vector< std::vector<int> > map;
+	std::vector< std::vector<int> > enemies;
 	Surface* surface;
-	Pos playerPosition;
+	Pos playerPosition = {0, 0};
 public:
 	Map(int width, int height);
 	virtual void show();

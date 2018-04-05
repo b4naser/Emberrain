@@ -34,28 +34,12 @@ Game::Game()
 	}
 
 	this->running = true;
-
-	gameSurface = new Surface(70, 40);
-
-	//Drawing border
-	for (int x = 0; x < screenBufferSize.X; x++)
-	{
-		for (int y = 0; y < screenBufferSize.Y; y++)
-		{
-
-			if (x == 0 || y == 0 || x == consoleSize.Right || y == consoleSize.Bottom)
-			{
-				this->gameSurface->printAt("#", 175, y, x);
-			}
-		}
-	}
 }
 
 void Game::run()
 {
-	stage = new Map(70, 40);
-
-	this->gameSurface->print();
+	Map* map = new Map(70, 40);
+	stage = map;
 
 	char cmd;
 
@@ -84,10 +68,4 @@ void Game::run()
 			break;
 		}
 	}
-}
-
-
-
-Game::~Game()
-{
 }

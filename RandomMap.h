@@ -24,16 +24,16 @@ private:
 	// Wektory przechowuj¹ce mapê oraz tymczasow¹ mapê, która potrzebna jest do tworzenia ostatecznej mapy.
 	std::vector< std::vector<int> > map;
 	std::vector< std::vector<int> > tempMap;
-	std::vector< std::vector<int> > enemies;
 
 	void randomizeMap();
-	void addBorder();
-	int getNeightboursCount(int type, int x, int y, bool countOutbounds);
+	void addCellRect(int cell_type, int xx, int yy, int width, int height);
+	int getNeightboursCount(int cellType, int x, int y, bool countOutbounds);
 	void doStep();
 	void addWallLayers();
 public:
 	RandomMap(int width, int height);
-	std::vector< std::vector<int> > getMapArray();
+	std::vector< std::vector<int> > getMap();
+	std::vector< std::vector<int> > getEnemies();
 	void generateMap();
 };
 

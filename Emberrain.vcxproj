@@ -107,6 +107,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomMap.cpp" />
     <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Vampire.cpp" />
   </ItemGroup>
@@ -120,6 +121,7 @@
     <ClInclude Include="RandomMap.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Surface.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Vampire.h" />
   </ItemGroup>

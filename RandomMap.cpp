@@ -3,11 +3,10 @@
 #include <random>
 #include <time.h>
 #include <vector>
-#include <Windows.h>
 
 using namespace std;
 
-RandomMap::RandomMap()
+RandomMap::RandomMap(int width, int height) : MAP_WIDTH(width), MAP_HEIGHT(height)
 {
 	srand(time(NULL));
 
@@ -18,7 +17,7 @@ RandomMap::RandomMap()
 
 void RandomMap::randomizeMap()
 /*
-	Tworzy ¿ywe komórki na podstawie prawdopodobieñsta LIVE_CELL_CHANCE, pozosta³e staj¹ siê martwe.
+	Wype³nia tablicê wartoœci¹ 1 na podstawie prawdopodobieñstwa LIVE_CELL_CHANCE, pozosta³e maj¹ wartoœæ 0
 */
 {
 	for (int y = 0; y < this->MAP_HEIGHT; y++)
@@ -35,7 +34,7 @@ void RandomMap::randomizeMap()
 
 void RandomMap::addBorder()
 /*
-	Dodaje wokó³ ca³ej mapy pojedyñcz¹ warstwê ¿ywych komórek, która zapobiega powstawaniu niedomkniêtych krawêdzi mapy
+	Dodaje wokó³ ca³ej tablicy 1, która zapobiega powstawaniu niedomkniêtych krawêdzi mapy podczas kolejnych kroków automatu komórkowego
 */
 {
 	for (int y = 0; y < this->MAP_HEIGHT; y++)
@@ -105,8 +104,9 @@ void RandomMap::doStep()
 	}
 }
 
-void RandomMap::addFirstWallBorder()
+void RandomMap::addWallLayers()
 {
+	// Dodaje 1 warstwe skal
 	for (int y = 0; y < this->MAP_HEIGHT; y++)
 	{
 		for (int x = 0; x < this->MAP_WIDTH; x++)
@@ -118,10 +118,9 @@ void RandomMap::addFirstWallBorder()
 			}
 		}
 	}
-}
+	this->map = this->tempMap;
 
-void RandomMap::addSecondWallBorder()
-{
+	// Dodaje 2 warstwe skal
 	for (int y = 0; y < this->MAP_HEIGHT; y++)
 	{
 		for (int x = 0; x < this->MAP_WIDTH; x++)
@@ -133,10 +132,9 @@ void RandomMap::addSecondWallBorder()
 			}
 		}
 	}
-}
+	this->map = this->tempMap;
 
-void RandomMap::addThirdWallBorder()
-{
+	// Dodaje 3 warstwe skal
 	for (int y = 0; y < this->MAP_HEIGHT; y++)
 	{
 		for (int x = 0; x < this->MAP_WIDTH; x++)
@@ -148,6 +146,7 @@ void RandomMap::addThirdWallBorder()
 			}
 		}
 	}
+	this->map = this->tempMap;
 }
 
 void RandomMap::generateMap()
@@ -162,34 +161,7 @@ void RandomMap::generateMap()
 		this->doStep();
 		this->map = this->tempMap;
 	}
-	this->addFirstWallBorder();
-	this->map = this->tempMap;
-	this->addSecondWallBorder();
-	this->map = this->tempMap;
-	this->addThirdWallBorder();
-	this->map = this->tempMap;
-}
-
-void RandomMap::print_map()
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	for (int i = 0; i < this->MAP_HEIGHT; i++)
-	{
-		for (int j = 0; j < this->MAP_WIDTH; j++)
-		{
-			//printf("[%d, %d] = %d\n", j, i, map[i][j]);
-			if (this->map[i][j] == 0)
-				SetConsoleTextAttribute(hConsole, 68);
-			else if (this->map[i][j] == 1)
-				SetConsoleTextAttribute(hConsole, 136);
-
-			cout << this->map[i][j];
-		}
-		cout << endl;
-	}
-
-	SetConsoleTextAttribute(hConsole, 7);
+	this->addWallLayers();
 }
 
 vector< vector<int> > RandomMap::getMapArray()
@@ -199,10 +171,4 @@ vector< vector<int> > RandomMap::getMapArray()
 */
 {
 	return this->map;
-}
-
-
-
-RandomMap::~RandomMap()
-{
 }

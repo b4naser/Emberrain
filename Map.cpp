@@ -7,14 +7,16 @@
 
 using namespace std;
 
-Map::Map()
+Map::Map(int width, int height) : MAP_WIDTH(width), MAP_HEIGHT(height)
 {
-	// Powiêksza wektor
+	// Powiêksza wektor mapy
 	this->map.resize(this->MAP_HEIGHT, vector<int>(this->MAP_WIDTH, 0));
+	
+	// Tworzy nowego Surface'a
+	surface = new Surface(this->MAP_WIDTH, this->MAP_HEIGHT);
 
 	// Generowanie map
-	RandomMap rm;
-
+	RandomMap rm(70, 40);
 	rm.generateMap();
 
 	this->map = rm.getMapArray();
@@ -25,16 +27,16 @@ Map::Map()
 
 void Map::show()
 {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	/*HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	for (int i = 0; i < this->MAP_HEIGHT; i++)
 	{
 		for (int j = 0; j < this->MAP_WIDTH; j++)
 		{
-			if (i == 30 && j == 30)
+			if (i == playerPosition.y && j == playerPosition.x)
 			{
-				SetConsoleTextAttribute(hConsole, 44);
-				cout << char(206);
+				SetConsoleTextAttribute(hConsole, 111);
+				cout << "@";
 				continue;
 			}
 
@@ -63,37 +65,11 @@ void Map::show()
 				SetConsoleTextAttribute(hConsole, 120);
 				cout << char(178);
 			}
-			/*
-						if (this->map[i][j] == 0)
-			{
-				SetConsoleTextAttribute(hConsole, 34);
-				cout << char(219);
-			}
-			else if (this->map[i][j] == 1)
-			{
-				SetConsoleTextAttribute(hConsole, 136);
-				cout << char(219);
-			}
-			else if (this->map[i][j] == 2)
-			{
-				SetConsoleTextAttribute(hConsole, 120);
-				cout << char(176);
-			}
-			else if (this->map[i][j] == 3)
-			{
-				SetConsoleTextAttribute(hConsole, 120);
-				cout << char(177);
-			}
-			else if (this->map[i][j] == 4)
-			{
-				SetConsoleTextAttribute(hConsole, 120);
-				cout << char(178);
-			}*/
 		}
 		cout << endl;
 	}
 
-	SetConsoleTextAttribute(hConsole, 15);
+	SetConsoleTextAttribute(hConsole, 15);*/
 }
 
 void Map::command(char cmd)
@@ -101,16 +77,16 @@ void Map::command(char cmd)
 	switch (cmd)
 	{
 	case 'w':
-		cout << "Idem w gore";
+		this->playerPosition.y -= 1;
 		break;
 	case 's':
-		cout << "Idem w dul";
+		this->playerPosition.y += 1;
 		break;
 	case 'a':
-		cout << "Idem w lewo";
+		this->playerPosition.x -= 1;
 		break;
 	case 'd':
-		cout << "Idem w prawo";
+		this->playerPosition.x += 1;
 		break;
 	default:
 		cout << "Czego Ty ode mnie chcesz?";

@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <iostream>
+#include <conio.h>
 #include "Game.h"
 #include "Map.h"
 
@@ -34,34 +35,27 @@ Game::Game()
 
 	this->running = true;
 
+	gameSurface = new Surface(70, 40);
+
 	//Drawing border
-	/*COORD cursorPosition;
 	for (int x = 0; x < screenBufferSize.X; x++)
 	{
-		for (int y = 0; y < screenBufferSize.Y-1; y++)
+		for (int y = 0; y < screenBufferSize.Y; y++)
 		{
 
-			if (x == 0 || y == 0 || x == screenBufferSize.X-1 || y == screenBufferSize.Y-2)
+			if (x == 0 || y == 0 || x == consoleSize.Right || y == consoleSize.Bottom)
 			{
-				cursorPosition.X = x;
-				cursorPosition.Y = y;
-
-				SetConsoleCursorPosition(hConsole, cursorPosition);
-				cout << "#";
+				this->gameSurface->printAt("#", 175, y, x);
 			}
 		}
 	}
-
-	cursorPosition.X = 1;
-	cursorPosition.Y = 1;
-	SetConsoleCursorPosition(hConsole, cursorPosition);*/
 }
 
 void Game::run()
 {
+	stage = new Map(70, 40);
 
-	Map map;
-	stage = new Map();
+	this->gameSurface->print();
 
 	char cmd;
 
@@ -71,8 +65,7 @@ void Game::run()
 		SetConsoleCursorPosition(hConsole, curPosition);
 
 		stage->show();
-		cout << endl << "What you gonna do?: ";
-		cin >> cmd;
+		cmd = _getch();
 
 		//Handling main commands like changing stage itd or pass it to current stage
 		switch (cmd)
@@ -88,6 +81,7 @@ void Game::run()
 			break;
 		default:
 			stage->command(cmd);
+			break;
 		}
 	}
 }

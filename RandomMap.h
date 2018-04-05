@@ -13,32 +13,27 @@
 class RandomMap
 {
 private:
-	// Parameters used to create proper map
+	// Parametry automatu komórkowego
 	const int LIVE_LIMIT = 4;
 	const int DEAD_LIMIT = 4;
 	const int STEPS = 20;
 	const float LIVE_CELL_CHANCE = 0.45;
-	const int MAP_WIDTH = 70;
-	const int MAP_HEIGHT = 40;
+	const int MAP_WIDTH;
+	const int MAP_HEIGHT;
 
-	// Dynamic arrays contain map and temp map used to get state of each cell
+	// Wektory przechowuj¹ce mapê oraz tymczasow¹ mapê, która potrzebna jest do tworzenia ostatecznej mapy.
 	std::vector< std::vector<int> > map;
 	std::vector< std::vector<int> > tempMap;
+	std::vector< std::vector<int> > enemies;
 
-
-public:
 	void randomizeMap();
 	void addBorder();
 	int getNeightboursCount(int type, int x, int y, bool countOutbounds);
 	void doStep();
-	void addFirstWallBorder();
-	void addSecondWallBorder();
-	void addThirdWallBorder();
-
-	RandomMap();
+	void addWallLayers();
+public:
+	RandomMap(int width, int height);
 	std::vector< std::vector<int> > getMapArray();
 	void generateMap();
-	void print_map();
-	~RandomMap();
 };
 

@@ -2,6 +2,7 @@
 #include <vector>
 #include "Stage.h"
 #include "RandomMap.h"
+#include "Surface.h"
 
 typedef struct Pos {
 	int x;
@@ -11,12 +12,13 @@ typedef struct Pos {
 class Map : public Stage
 {
 private:
-	const int MAP_WIDTH = 70;
-	const int MAP_HEIGHT = 40;
+	const int MAP_WIDTH;
+	const int MAP_HEIGHT;
 	std::vector< std::vector<int> > map;
+	Surface* surface;
 	Pos playerPosition;
 public:
-	Map();
+	Map(int width, int height);
 	virtual void show();
 	virtual void command(char cmd);
 	~Map();

@@ -11,90 +11,118 @@ Map::Map(int width, int height) : MAP_WIDTH(width), MAP_HEIGHT(height)
 {
 	// Powiêksza wektor mapy
 	this->map.resize(this->MAP_HEIGHT, vector<int>(this->MAP_WIDTH, 0));
-	
+
 	// Tworzy nowego Surface'a
 	surface = new Surface(this->MAP_WIDTH, this->MAP_HEIGHT);
 
 	// Generowanie map
-	RandomMap rm(70, 40);
+	RandomMap rm(30, 30);
 	rm.generateMap();
 
+	// Przepisanie randomowej mapy
 	this->map = rm.getMap();
 
+	// Przepisanie wspolrzednych przeciwnikow
 	this->enemies = rm.getEnemies();
 }
 
-void Map::show()
+Surface* Map::getSurface()
 {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	vector< string > actions;
 
-	for (int i = 0; i < this->MAP_HEIGHT; i++)
+	// i, j wykorzystywane sa do ustalania pozycji na ktorej ma byc dodany znak do Surface
+	int i, j = 15;
+	// Iteracja po mapie wzglêdem pozycji playera
+	for (int y = this->playerPosition.y - 9; y < this->playerPosition.y + 10; y++)
 	{
-		for (int j = 0; j < this->MAP_WIDTH; j++)
+		i = 5;
+		for (int x = this->playerPosition.x - 14; x < this->playerPosition.x + 15; x++)
 		{
-			if (i == playerPosition.y && j == playerPosition.x)
+			// Dodaje playera na srodek wyswietlanej mapy
+			if (j == 25 && i == 20)
 			{
-				SetConsoleTextAttribute(hConsole, 47);
-				cout << "@";
-				continue;
+				this->surface->printAt("@", 47, j, i);
+				goto cntn;
 			}
-			
+
+			// Jesli na danej pozycji znajduje sie przeciwnik - dodaje go do Surface'a
 			for (int k = 0; k < this->enemies.size(); k++)
 			{
-				if (this->enemies[k][1] == i && this->enemies[k][0] == j)
+				if (this->enemies[k][1] == y && this->enemies[k][0] == x)
 				{
+					// Dostosowuje kolor na podstawie typu przeciwnika
 					switch (this->enemies[k][2])
 					{
 					case 1:
-						SetConsoleTextAttribute(hConsole, 41);
+						this->surface->printAt(char(2), 41, j, i);
 						break;
 					case 2:
-						SetConsoleTextAttribute(hConsole, 43);
+						this->surface->printAt(char(2), 43, j, i);
 						break;
 					case 3:
-						SetConsoleTextAttribute(hConsole, 46);
+						this->surface->printAt(char(2), 46, j, i);
 						break;
 					}
 
-					cout << char(2);
 					goto cntn;
 				}
 			}
 
-			if (this->map[i][j] == 0)
+			if (y < 0 || x < 0 || y > this->MAP_HEIGHT - 1 || x > this->MAP_WIDTH - 1)
+				// Jeœli iteracja odbywa siê poza granicami wektora mapy to przestrzen ta jest zastepowana szarym blokiem
+				this->surface->printAt(char(219), 136, j, i);
+			else
 			{
-				SetConsoleTextAttribute(hConsole, 98);
-				cout << char(178);
-			}
-			else if (this->map[i][j] == 1)
-			{
-				SetConsoleTextAttribute(hConsole, 136);
-				cout << char(219);
-			}
-			else if (this->map[i][j] == 2)
-			{
-				SetConsoleTextAttribute(hConsole, 120);
-				cout << char(176);
-			}
-			else if (this->map[i][j] == 3)
-			{
-				SetConsoleTextAttribute(hConsole, 120);
-				cout << char(177);
-			}
-			else if (this->map[i][j] == 4)
-			{
-				SetConsoleTextAttribute(hConsole, 120);
-				cout << char(178);
+				// Obsluga kolorow komorek mapy
+				switch (this->map[y][x])
+				{
+				case 0:
+					this->surface->printAt(char(178), 98, j, i);
+					break;
+				case 1:
+					this->surface->printAt(char(219), 136, j, i);
+					break;
+				case 2:
+					this->surface->printAt(char(176), 120, j, i);
+					break;
+				case 3:
+					this->surface->printAt(char(177), 120, j, i);
+					break;
+				case 4:
+					this->surface->printAt(char(178), 120, j, i);
+					break;
+				}
 			}
 
-			// cout musi byæ za goto bo wyrzuca blad przez } na koñcu
-			cntn:
-			cout << "";
+		cntn:
+			i++;
 		}
-		cout << endl;
+		j++;
 	}
 
-	SetConsoleTextAttribute(hConsole, 15);
+	// Sprawdza otoczenie gracza pod katem ewentualnych akcji
+	for (int y = this->playerPosition.y - 1; y < this->playerPosition.y + 2; y++)
+	{
+		for (int x = this->playerPosition.x - 1; x < this->playerPosition.x + 2; x++)
+		{
+			// Czy jest jakis przeciwnik?
+			for (int k = 0; k < this->enemies.size(); k++)
+			{
+				if (this->enemies[k][1] == y && this->enemies[k][0] == x)
+				{
+					actions.push_back("z - zaatakuj");
+				}
+			}
+		}
+	}
+
+	// Wypisanie wszystkich mozliwych akcji
+	for (int i = 0; i < actions.size(); i++)
+	{
+		this->surface->printAt(actions[i], 67, 1 + i, 5);
+	}
+
+	return this->surface;
 }
 
 void Map::command(char cmd)
@@ -102,16 +130,28 @@ void Map::command(char cmd)
 	switch (cmd)
 	{
 	case 'w':
-		this->playerPosition.y -= 1;
+		if (this->map[this->playerPosition.y - 1][this->playerPosition.x] == 0)
+			this->playerPosition.y -= 1;
+		else
+			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	case 's':
-		this->playerPosition.y += 1;
+		if (this->map[this->playerPosition.y + 1][this->playerPosition.x] == 0)
+			this->playerPosition.y += 1;
+		else
+			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	case 'a':
-		this->playerPosition.x -= 1;
+		if (this->map[this->playerPosition.y][this->playerPosition.x - 1] == 0)
+			this->playerPosition.x -= 1;
+		else
+			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	case 'd':
-		this->playerPosition.x += 1;
+		if (this->map[this->playerPosition.y][this->playerPosition.x + 1] == 0)
+			this->playerPosition.x += 1;
+		else
+			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	}
 }

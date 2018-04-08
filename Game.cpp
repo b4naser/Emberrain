@@ -9,12 +9,12 @@ using namespace std;
 Game::Game()
 {
 	// Definicja uchwytu konsoli
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	this->hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	// Coords for size of screen buffer
 	COORD screenBufferSize;
-	screenBufferSize.X = 100;
-	screenBufferSize.Y = 50;
+	screenBufferSize.X = 101;
+	screenBufferSize.Y = 51;
 
 	// Coords for console position and size
 	SMALL_RECT consoleSize;
@@ -24,11 +24,11 @@ Game::Game()
 	consoleSize.Bottom = screenBufferSize.Y - 1;
 
 	// Error handling
-	if (!SetConsoleScreenBufferSize(hConsole, screenBufferSize))
+	if (!SetConsoleScreenBufferSize(this->hConsole, screenBufferSize))
 	{
 		cout << "SetConsoleScreenBufferSize: " << GetLastError();
 	}
-	if (!SetConsoleWindowInfo(hConsole, true, &consoleSize))
+	if (!SetConsoleWindowInfo(this->hConsole, true, &consoleSize))
 	{
 		cout << "SetConsoleWindowInfo: " << GetLastError();
 	}
@@ -38,20 +38,44 @@ Game::Game()
 
 void Game::run()
 {
-	Map* map = new Map(70, 40);
+	// Inicjalizuje wszystkie Stage'e
+	Map* map = new Map(40, 40);
+
+	// Ustawia domyslny stage
 	stage = map;
 
+	// Przechowuje Surface'a danego Stage'a
+	Surface* surface;
+
+	// Przechowuje wpisana komende
 	char cmd;
 
-	COORD curPosition{ 0, 0 };
+	// Pozycja na ktora ustawiany jest kursor po kazdej iteracji petli while
+	COORD cursorPosition{ 0, 0 };
+
 	while(this->running)
 	{
-		SetConsoleCursorPosition(hConsole, curPosition);
+		// Zawsze przed wyswietleniem Surface'a cofa kursor do gornego lewego rogu
+		SetConsoleCursorPosition(this->hConsole, cursorPosition);
 
-		stage->show();
+		// Przepisuje wskaznik do Surface'a aktualnego Stage'a - poprawia czytelnosc ponizszej petli
+		surface = stage->getSurface();
+
+		// Wyswietla Surface'a aktualnego Stage'a
+		for (int y = 0; y < surface->get().size(); y++)
+		{
+			for (int x = 0; x < surface->get()[0].size(); x++)
+			{
+				SetConsoleTextAttribute(this->hConsole, surface->get()[y][x]->getColor());
+				std::cout << surface->get()[y][x]->getChar();
+			}
+			std::cout << std::endl;
+		}
+
+		// Czeka na wpisanie znaku
 		cmd = _getch();
 
-		//Handling main commands like changing stage itd or pass it to current stage
+		//Obsluguje wpisany znak, jesli komenda nie dotyczy przelaczania interfejsow lub wyjscia przekazuje ja do aktualnego Stage'a
 		switch (cmd)
 		{
 		case 'i':

@@ -17,10 +17,10 @@ private:
 	std::vector< std::vector<int> > map;
 	std::vector< std::vector<int> > enemies;
 	Surface* surface;
-	Pos playerPosition = {0, 0};
+	Pos playerPosition = {10, 10};
 public:
 	Map(int width, int height);
-	virtual void show();
+	virtual Surface* getSurface();
 	virtual void command(char cmd);
 	~Map();
 };

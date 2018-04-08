@@ -4,8 +4,6 @@
 #include <time.h>
 #include <vector>
 
-using namespace std;
-
 /*
 	TODO: tempMap mo¿na stworzyæ jak¹ zmienna lokalna funkcji które jej potrzebuj¹, a nie jako zmienn¹ klasy
 */
@@ -15,8 +13,8 @@ RandomMap::RandomMap(int width, int height) : MAP_WIDTH(width), MAP_HEIGHT(heigh
 	srand(time(NULL));
 
 	// Powiêksza wektory
-	this->map.resize(this->MAP_HEIGHT, vector<int>(this->MAP_WIDTH, 0));
-	this->tempMap.resize(this->MAP_HEIGHT, vector<int>(this->MAP_WIDTH, 0));
+	this->map.resize(this->MAP_HEIGHT, std::vector<int>(this->MAP_WIDTH, 0));
+	this->tempMap.resize(this->MAP_HEIGHT, std::vector<int>(this->MAP_WIDTH, 0));
 }
 
 void RandomMap::randomizeMap()
@@ -171,7 +169,7 @@ void RandomMap::generateMap()
 	this->addWallLayers();
 }
 
-vector< vector<int> > RandomMap::getMap()
+std::vector< std::vector<int> > RandomMap::getMap()
 /*
 	Zwraca tablicê z gotow¹ map¹
 	TODO: Wypada³oby sprawdziæ czy mapa zosta³a wygenerowana
@@ -180,22 +178,39 @@ vector< vector<int> > RandomMap::getMap()
 	return this->map;
 }
 
-std::vector<std::vector<int>> RandomMap::getEnemies()
+std::vector< std::vector<int> > RandomMap::getEnemies()
 {
+	// Wektor z pocyzjami i typem przeciwnikow
 	std::vector< std::vector<int> > enemies;
 
 	int x, y, type;
+
+	// Flaga uzywana do sprawdzania, czy na danej pozycji znajduje sie juz przeciwnik
+	bool empty_space = true;
 
 	while (enemies.size() < 10)
 	{
 		x = rand() % this->MAP_WIDTH;
 		y = rand() % this->MAP_HEIGHT;
 		type = rand() % 3 + 1;
-	// TODO: Sprawdzac czy na danej pozycji juz nie ma przeciwnikow
+
 		if (this->map[y][x] == 0)
 		{
-			enemies.push_back({ x, y, type });
+			for (int i = 0; i < enemies.size(); i++)
+			{
+				if(enemies[i][0] == x && enemies[i][1] == y)
+				{ 
+					// Jesli na danej pozycji jest juz przeciwnik, flaga przyjmie wartosc false
+					empty_space = false;
+					break;
+				}	
+			}
+
+			if(empty_space)
+				enemies.push_back({ x, y, type });
 		}
+
+		
 
 	}
 

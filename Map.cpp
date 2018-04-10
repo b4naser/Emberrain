@@ -7,15 +7,18 @@
 
 using namespace std;
 
+COORD mapPosition{ 0, 0 };
+COORD mapPrintSize{ 7, 5 }; // Niezale¿nie od podania liczby parzystej czy nieparzystej znak gracza zawsze bêdzie na œrodku. W przypadku podania parzystej rozmiar zostanie zwiêkszony o 1
+
 Map::Map(int width, int height) : MAP_WIDTH(width), MAP_HEIGHT(height)
 {
 	// Powiêksza wektor mapy
 	this->map.resize(this->MAP_HEIGHT, vector<int>(this->MAP_WIDTH, 0));
 
 	// Tworzy nowego Surface'a
-	surface = new Surface(this->MAP_WIDTH, this->MAP_HEIGHT);
+	surface = new Surface(30, 30);
 
-	// Generowanie map
+	// Generowanie mapy
 	RandomMap rm(30, 30);
 	rm.generateMap();
 
@@ -31,15 +34,15 @@ Surface* Map::getSurface()
 	vector< string > actions;
 
 	// i, j wykorzystywane sa do ustalania pozycji na ktorej ma byc dodany znak do Surface
-	int i, j = 15;
+	int i, j = mapPosition.Y;
 	// Iteracja po mapie wzglêdem pozycji playera
-	for (int y = this->playerPosition.y - 9; y < this->playerPosition.y + 10; y++)
+	for (int y = this->playerPosition.y - mapPrintSize.Y / 2; y < this->playerPosition.y + mapPrintSize.Y / 2 + 1; y++)
 	{
-		i = 5;
-		for (int x = this->playerPosition.x - 14; x < this->playerPosition.x + 15; x++)
+		i = mapPosition.X;
+		for (int x = this->playerPosition.x - mapPrintSize.X / 2; x < this->playerPosition.x + mapPrintSize.X / 2 + 1; x++)
 		{
 			// Dodaje playera na srodek wyswietlanej mapy
-			if (j == 25 && i == 20)
+			if (j == mapPrintSize.Y / 2 && i == mapPrintSize.X / 2)
 			{
 				this->surface->printAt("@", 47, j, i);
 				goto cntn;
@@ -127,33 +130,28 @@ Surface* Map::getSurface()
 
 void Map::command(char cmd)
 {
+	this->surface->clear();
+
 	switch (cmd)
 	{
 	case 'w':
 		if (this->map[this->playerPosition.y - 1][this->playerPosition.x] == 0)
 			this->playerPosition.y -= 1;
-		else
-			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	case 's':
 		if (this->map[this->playerPosition.y + 1][this->playerPosition.x] == 0)
 			this->playerPosition.y += 1;
-		else
-			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	case 'a':
 		if (this->map[this->playerPosition.y][this->playerPosition.x - 1] == 0)
 			this->playerPosition.x -= 1;
-		else
-			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	case 'd':
 		if (this->map[this->playerPosition.y][this->playerPosition.x + 1] == 0)
 			this->playerPosition.x += 1;
-		else
-			this->surface->printAt("Blocked", 46, 0, 0);
 		break;
 	}
+
 }
 
 Map::~Map()

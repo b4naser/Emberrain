@@ -102,7 +102,7 @@ void Fight::clearChooseField(bool tempCondition)
 	}
 
 }
-void Fight::infoBrakWyboru(int FLAG_ERROR)
+void Fight::infoIncorrectInput(int FLAG_ERROR)
 {
 	if (FLAG_ERROR == 1) {
 		pozycjaPokazywaniaAkcji = { 30, 31 };
@@ -393,14 +393,13 @@ void Fight::fightPlayerAttack()
 		SetConsoleCursorPosition(hConsole, pozycjaPokazywaniaAkcji);
 		if (scanf_s("%d", &option) != 1) {
 			while (ch = getchar() != '\n');
-			infoBrakWyboru(2);
+			infoIncorrectInput(2);
 			Sleep(100);
 		}
 		else if(option<=2) {
 
-			  //inkrementacja rundy
-			if (runda % 5 == 0 && runda != 0 && condition) {
-				condition = false;
+			  //czyszczenie pola po 5 rundach
+			if (runda % 5 == 0 && runda != 0) {
 				clearCombat();
 				rzad_Akcji = 8;//WARNING TU TEZ ZMIEN!
 				pozycjaPokazywaniaAkcji = { STALA, rzad_Akcji };
@@ -456,16 +455,15 @@ void Fight::fightPlayerAttack()
 							break;
 						}
 						else {
-								infoBrakWyboru(1);
+								infoIncorrectInput(1);
 								clearChooseField(false);
 								goto wczytaj;
 							}
 					}
 				roundLoop();
-				condition = true;
 				break;
 		}
-		else infoBrakWyboru(2);  //1 -brak energi 2-niewlasciwa akcja
+		else infoIncorrectInput(2);  //1 -brak energi 2-niewlasciwa akcja
 	}
 }
 void Fight::fightCreatureAttack() {

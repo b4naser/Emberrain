@@ -1,6 +1,5 @@
 #ifndef FIGHT_H
 #define FIGHT_H
-#include "Surface.h"
 #include "Vampire.h"
 #include "Player.h"
 #include "Minotaur.h"
@@ -43,14 +42,13 @@ private:
 	void setEnergyBar();			 //ustawia wartosc energy baru
 	void clearCombat();					// czysci combat co 5rund
 	void setHpBar();					
-	void clearChooseField(bool);				//czysci pole wyboru akcji
-	void infoBrakWyboru(int);   //bl1ad 1-brak energi 2-brak wlasciwej akcji
+	void clearChooseField(bool);				//czysci pole wyboru akcji w zaloznosci co sie stalo 
+	void infoIncorrectInput(int);   //bl1ad 1-brak energi 2-brak wlasciwej akcji
 	void normalAttack();
 							
 public:
 	Fight::Fight(Player& ,int);  //Flaga int 1 =szkielet,2=minotaur 3=vampire
 	void fightStart();
-	Surface surface= Surface(100,32);
 	~Fight();
 
 

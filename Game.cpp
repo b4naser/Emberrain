@@ -13,8 +13,8 @@ Game::Game()
 
 	// Coords for size of screen buffer
 	COORD screenBufferSize;
-	screenBufferSize.X = 101;
-	screenBufferSize.Y = 51;
+	screenBufferSize.X = 80;
+	screenBufferSize.Y = 30;
 
 	// Coords for console position and size
 	SMALL_RECT consoleSize;
@@ -33,19 +33,22 @@ Game::Game()
 		cout << "SetConsoleWindowInfo: " << GetLastError();
 	}
 
+	// Ukrycie kursora konsol
+	CONSOLE_CURSOR_INFO curInfo;
+	curInfo.bVisible = false;
+	curInfo.dwSize = 10;
+	SetConsoleCursorInfo(this->hConsole, &curInfo);
+
 	this->running = true;
 }
 
 void Game::run()
 {
 	// Inicjalizuje wszystkie Stage'e
-	Map* map = new Map(40, 40);
+	Map* map = new Map();
 
 	// Ustawia domyslny stage
 	stage = map;
-
-	// Przechowuje Surface'a danego Stage'a
-	Surface* surface;
 
 	// Przechowuje wpisana komende
 	char cmd;
@@ -55,22 +58,8 @@ void Game::run()
 
 	while(this->running)
 	{
-		// Zawsze przed wyswietleniem Surface'a cofa kursor do gornego lewego rogu
-		SetConsoleCursorPosition(this->hConsole, cursorPosition);
-
-		// Przepisuje wskaznik do Surface'a aktualnego Stage'a - poprawia czytelnosc ponizszej petli
-		surface = stage->getSurface();
-
-		// Wyswietla Surface'a aktualnego Stage'a
-		for (int y = 0; y < surface->get().size(); y++)
-		{
-			for (int x = 0; x < surface->get()[0].size(); x++)
-			{
-				SetConsoleTextAttribute(this->hConsole, surface->get()[y][x]->getColor());
-				std::cout << surface->get()[y][x]->getChar();
-			}
-			std::cout << std::endl;
-		}
+		// Wyswietla UI
+		stage->show();
 
 		// Czeka na wpisanie znaku
 		cmd = _getch();

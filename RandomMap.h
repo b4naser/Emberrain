@@ -33,7 +33,6 @@ private:
 public:
 	RandomMap(int width, int height);
 	std::vector< std::vector<int> > getMap();
-	std::vector< std::vector<int> > getEnemies();
 	void generateMap();
 };
 

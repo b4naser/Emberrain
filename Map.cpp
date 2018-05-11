@@ -10,60 +10,81 @@ using namespace std;
 COORD mapPosition{ 0, 0 };
 COORD mapPrintSize{ 7, 5 }; // Niezale¿nie od podania liczby parzystej czy nieparzystej znak gracza zawsze bêdzie na œrodku. W przypadku podania parzystej rozmiar zostanie zwiêkszony o 1
 
-Map::Map(int width, int height) : MAP_WIDTH(width), MAP_HEIGHT(height)
+Map::Map()
 {
 	// Powiêksza wektor mapy
 	this->map.resize(this->MAP_HEIGHT, vector<int>(this->MAP_WIDTH, 0));
 
-	// Tworzy nowego Surface'a
-	surface = new Surface(30, 30);
-
 	// Generowanie mapy
-	RandomMap rm(30, 30);
+	RandomMap rm(this->MAP_WIDTH, this->MAP_HEIGHT);
 	rm.generateMap();
 
 	// Przepisanie randomowej mapy
 	this->map = rm.getMap();
 
-	// Przepisanie wspolrzednych przeciwnikow
-	this->enemies = rm.getEnemies();
+	// Wylosowanie pozycji portalu, gracza i przeciwnikow
+	this->generatePos();
 }
 
-Surface* Map::getSurface()
+void Map::show()
 {
-	vector< string > actions;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD cursorPos;
 
-	// i, j wykorzystywane sa do ustalania pozycji na ktorej ma byc dodany znak do Surface
-	int i, j = mapPosition.Y;
-	// Iteracja po mapie wzglêdem pozycji playera
-	for (int y = this->playerPosition.y - mapPrintSize.Y / 2; y < this->playerPosition.y + mapPrintSize.Y / 2 + 1; y++)
+	for (int x = 50; x < 70; x++)
 	{
-		i = mapPosition.X;
-		for (int x = this->playerPosition.x - mapPrintSize.X / 2; x < this->playerPosition.x + mapPrintSize.X / 2 + 1; x++)
+		for (int y = 5; y < 10; y++)
 		{
-			// Dodaje playera na srodek wyswietlanej mapy
-			if (j == mapPrintSize.Y / 2 && i == mapPrintSize.X / 2)
+			cursorPos.X = x;
+			cursorPos.Y = y;
+			SetConsoleCursorPosition(hConsole, cursorPos);
+			SetConsoleTextAttribute(hConsole, 0);
+			cout << " ";
+		}
+	}
+
+	for (int x = 2; x < this->MAP_WIDTH+2; x++)
+	{
+		for (int y = 2; y < this->MAP_HEIGHT+2; y++)
+		{
+			cursorPos.X = x;
+			cursorPos.Y = y;
+			SetConsoleCursorPosition(hConsole, cursorPos);
+
+			//// Wyswietlenie playera
+			if (this->playerPos.x+2 == x && this->playerPos.y+2 == y)
 			{
-				this->surface->printAt("@", 47, j, i);
-				goto cntn;
+				SetConsoleTextAttribute(hConsole, 47);
+				cout << "@";
+				goto cntn; // Pomija wyswietlanie reszty elementow
 			}
 
-			// Jesli na danej pozycji znajduje sie przeciwnik - dodaje go do Surface'a
+			// Wyswietlenie portalu
+			if (this->portalPos.x + 2 == x && this->portalPos.y + 2 == y)
+			{
+				SetConsoleTextAttribute(hConsole, 109);
+				cout << char(177);
+				goto cntn; // Pomija wyswietlanie reszty elementow
+			}
+
 			for (int k = 0; k < this->enemies.size(); k++)
 			{
-				if (this->enemies[k][1] == y && this->enemies[k][0] == x)
+				if (this->enemies[k][1]+2 == y && this->enemies[k][0]+2 == x)
 				{
 					// Dostosowuje kolor na podstawie typu przeciwnika
 					switch (this->enemies[k][2])
 					{
 					case 1:
-						this->surface->printAt(char(2), 41, j, i);
+						SetConsoleTextAttribute(hConsole, 41);
+						cout << char(2);
 						break;
 					case 2:
-						this->surface->printAt(char(2), 43, j, i);
+						SetConsoleTextAttribute(hConsole, 43);
+						cout << char(2);
 						break;
 					case 3:
-						this->surface->printAt(char(2), 46, j, i);
+						SetConsoleTextAttribute(hConsole, 46);
+						cout << char(2);
 						break;
 					}
 
@@ -71,87 +92,160 @@ Surface* Map::getSurface()
 				}
 			}
 
-			if (y < 0 || x < 0 || y > this->MAP_HEIGHT - 1 || x > this->MAP_WIDTH - 1)
-				// Jeœli iteracja odbywa siê poza granicami wektora mapy to przestrzen ta jest zastepowana szarym blokiem
-				this->surface->printAt(char(219), 136, j, i);
-			else
+			// Wyswietlenie terenu wzgledem liczby z tablicy map
+			switch (this->map[y-2][x-2])
 			{
-				// Obsluga kolorow komorek mapy
-				switch (this->map[y][x])
-				{
-				case 0:
-					this->surface->printAt(char(178), 98, j, i);
-					break;
-				case 1:
-					this->surface->printAt(char(219), 136, j, i);
-					break;
-				case 2:
-					this->surface->printAt(char(176), 120, j, i);
-					break;
-				case 3:
-					this->surface->printAt(char(177), 120, j, i);
-					break;
-				case 4:
-					this->surface->printAt(char(178), 120, j, i);
-					break;
-				}
+			case 0:
+				SetConsoleTextAttribute(hConsole, 98);
+				cout << char(178);
+				break;
+			case 1:
+				SetConsoleTextAttribute(hConsole, 136);
+				cout << char(219);
+				break;
+			case 2:
+				SetConsoleTextAttribute(hConsole, 120);
+				cout << char(176);
+				break;
+			case 3:
+				SetConsoleTextAttribute(hConsole, 120);
+				cout << char(177);
+				break;
+			case 4:
+				SetConsoleTextAttribute(hConsole, 120);
+				cout << char(178);
+				break;
 			}
 
-		cntn:
-			i++;
+		cntn:; // Bez tego goto nie dziala, ale rownie dobrze moze byc tu cokolwiek tylko nie }
 		}
-		j++;
-	}
 
-	// Sprawdza otoczenie gracza pod katem ewentualnych akcji
-	for (int y = this->playerPosition.y - 1; y < this->playerPosition.y + 2; y++)
-	{
-		for (int x = this->playerPosition.x - 1; x < this->playerPosition.x + 2; x++)
+		// Sprawdzanie czy jakis przeciwnik znajduje sie w zasiegu
+		// TODO: uzycie wartosci bezwzglednej roznicy pozycji zamiast iterowania po kazdej pozycji wokol gracza
+
+		this->target = -1; // Sluzy do przechowywania celu ktory ma zostac zaatakowany, gdy przeciwnik jest w poblizu ustawia wartosc na index przeciwnika w tablicy
+		for (int y = this->playerPos.y - 1; y < this->playerPos.y + 2; y++)
 		{
-			// Czy jest jakis przeciwnik?
-			for (int k = 0; k < this->enemies.size(); k++)
+			for (int x = this->playerPos.x - 1; x < this->playerPos.x + 2; x++)
 			{
-				if (this->enemies[k][1] == y && this->enemies[k][0] == x)
+				// Czy jest jakis przeciwnik?
+				for (int k = 0; k < this->enemies.size(); k++)
 				{
-					actions.push_back("z - zaatakuj");
+					if (this->enemies[k][1] == y && this->enemies[k][0] == x)
+					{
+						cursorPos.X = 50;
+						cursorPos.Y = 5;
+						SetConsoleCursorPosition(hConsole, cursorPos);
+						SetConsoleTextAttribute(hConsole, 15);
+						cout << "z - zaatakuj " << enemies[k][2];
+						target = k;
+						goto finish;
+					}
 				}
 			}
+			finish:;
+		}
+
+		// Sprawdzanie czy gracz znajduje sie na portalu
+		if (playerPos.x == portalPos.x && playerPos.y == portalPos.y)
+		{
+			cursorPos.X = 50;
+			cursorPos.Y = 6;
+			SetConsoleCursorPosition(hConsole, cursorPos);
+			SetConsoleTextAttribute(hConsole, 15);
+			cout << "g - zejdz nizej";
 		}
 	}
-
-	// Wypisanie wszystkich mozliwych akcji
-	for (int i = 0; i < actions.size(); i++)
-	{
-		this->surface->printAt(actions[i], 67, 1 + i, 5);
-	}
-
-	return this->surface;
 }
 
 void Map::command(char cmd)
 {
-	this->surface->clear();
-
-	switch (cmd)
+	if (cmd == 'w')
 	{
-	case 'w':
-		if (this->map[this->playerPosition.y - 1][this->playerPosition.x] == 0)
-			this->playerPosition.y -= 1;
-		break;
-	case 's':
-		if (this->map[this->playerPosition.y + 1][this->playerPosition.x] == 0)
-			this->playerPosition.y += 1;
-		break;
-	case 'a':
-		if (this->map[this->playerPosition.y][this->playerPosition.x - 1] == 0)
-			this->playerPosition.x -= 1;
-		break;
-	case 'd':
-		if (this->map[this->playerPosition.y][this->playerPosition.x + 1] == 0)
-			this->playerPosition.x += 1;
-		break;
+		if (this->map[this->playerPos.y - 1][this->playerPos.x] == 0)
+			this->playerPos.y -= 1;
 	}
+	else if (cmd == 's')
+	{
+		if (this->map[this->playerPos.y + 1][this->playerPos.x] == 0)
+			this->playerPos.y += 1;
+	}
+	else if (cmd == 'a')
+	{
+		if (this->map[this->playerPos.y][this->playerPos.x - 1] == 0)
+			this->playerPos.x -= 1;
+	}
+	else if (cmd == 'd')
+	{
+		if (this->map[this->playerPos.y][this->playerPos.x + 1] == 0)
+			this->playerPos.x += 1;
+	}
+	else if (cmd == 'g' && playerPos.x == portalPos.x && playerPos.y == portalPos.y)
+	{
+		RandomMap rm(this->MAP_WIDTH, this->MAP_HEIGHT);
+		rm.generateMap();
+		this->map = rm.getMap();
+		this->generatePos();
+	}
+	else if (cmd == 'a' && target != -1)
+	{
+		// Wywolanie fight
+	}
+}
 
+void Map::generatePos()
+// TODO: Wylosowane wczesniej pozycje powinny zostac wykluczone z dostepnych pol
+{
+	// Zmienne przechowujace wylosowana pozycje gracza, przeciwnikow oraz portalu
+	int x, y;
+
+	// Wylosowanie pozycji playera
+	do
+	{
+		x = rand() % this->MAP_WIDTH;
+		y = rand() % this->MAP_HEIGHT;
+	} while (this->map[y][x] != 0);
+
+	this->playerPos = { x, y };
+
+	// Wylosowanie pozycji portalu
+	do
+	{
+		x = rand() % this->MAP_WIDTH;
+		y = rand() % this->MAP_HEIGHT;
+	} while (this->map[y][x] != 0);
+
+	this->portalPos = { x, y };
+
+	// Generowanie przeciwnikow
+	int type;
+
+	// Flaga uzywana do sprawdzania, czy na danej pozycji znajduje sie juz przeciwnik
+	bool empty_space;
+
+	while (this->enemies.size() < 10)
+	{
+		empty_space = true;
+		x = rand() % this->MAP_WIDTH;
+		y = rand() % this->MAP_HEIGHT;
+		type = rand() % 3 + 1;
+
+		if (this->map[y][x] == 0)
+		{
+			for (int i = 0; i < this->enemies.size(); i++)
+			{
+				if (this->enemies[i][0] == x && this->enemies[i][1] == y)
+				{
+					// Jesli na danej pozycji jest juz przeciwnik, flaga przyjmie wartosc false
+					empty_space = false;
+					break;
+				}
+			}
+
+			if (empty_space)
+				this->enemies.push_back({ x, y, type });
+		}
+	}
 }
 
 Map::~Map()

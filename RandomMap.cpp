@@ -157,15 +157,20 @@ void RandomMap::generateMap()
 */
 {
 	this->randomizeMap();
-	// Dodaje obramowanie wokol mapy zeby mapa byla zamknieta
+	// Dodaje obramowanie wokol mapy zeby mapa byla zamknieta ...
 	this->addCellRect(1, 0, 0, this->MAP_WIDTH, this->MAP_HEIGHT);
+	// ... i estetycznie wygl¹dala
+	this->addCellRect(1, 1, 1, this->MAP_WIDTH-1, this->MAP_HEIGHT-1);
+	this->addCellRect(1, 2, 2, this->MAP_WIDTH-2, this->MAP_HEIGHT-2);
 	// Dodaje zywe komorki blisko krawedzi mapy co ma zapobiegac tworzeniu sie odizolowanych pomieszczen
-	this->addCellRect(0, this->MAP_WIDTH * 1 / 9, this->MAP_HEIGHT * 1 / 9, this->MAP_WIDTH * 8 / 9, this->MAP_HEIGHT * 8 / 9);
+	this->addCellRect(0, this->MAP_WIDTH * 1 / 6, this->MAP_HEIGHT * 1 / 6, this->MAP_WIDTH * 5 / 6, this->MAP_HEIGHT * 5 / 6);
+
 	for (int i = 0; i < this->STEPS; i++)
 	{
 		this->doStep();
 		this->map = this->tempMap;
 	}
+
 	this->addWallLayers();
 }
 
@@ -176,43 +181,4 @@ std::vector< std::vector<int> > RandomMap::getMap()
 */
 {
 	return this->map;
-}
-
-std::vector< std::vector<int> > RandomMap::getEnemies()
-{
-	// Wektor z pocyzjami i typem przeciwnikow
-	std::vector< std::vector<int> > enemies;
-
-	int x, y, type;
-
-	// Flaga uzywana do sprawdzania, czy na danej pozycji znajduje sie juz przeciwnik
-	bool empty_space = true;
-
-	while (enemies.size() < 10)
-	{
-		x = rand() % this->MAP_WIDTH;
-		y = rand() % this->MAP_HEIGHT;
-		type = rand() % 3 + 1;
-
-		if (this->map[y][x] == 0)
-		{
-			for (int i = 0; i < enemies.size(); i++)
-			{
-				if(enemies[i][0] == x && enemies[i][1] == y)
-				{ 
-					// Jesli na danej pozycji jest juz przeciwnik, flaga przyjmie wartosc false
-					empty_space = false;
-					break;
-				}	
-			}
-
-			if(empty_space)
-				enemies.push_back({ x, y, type });
-		}
-
-		
-
-	}
-
-	return enemies;
 }

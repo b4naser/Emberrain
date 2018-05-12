@@ -2,15 +2,15 @@
 
 
 
-Minotaur::Minotaur()
+Minotaur::Minotaur(int atakPlayera, int obronaPlayera,int hpPlayera)
 {
 	creatureName = "Minotaur";
-	creatureHp = 140;
-	LifeSteal = 0;
+	creatureHp = creatureHp = std::rand() % hpPlayera / 2 + hpPlayera / 2 + 10;
+	creatureLifeSteal = 0;
 	creatureDodgeRate = 5; //dodge
 	creatureStrengh = 16; //sila uderzenia
 	creatureDefence = 4; //obrona
-	minotaurStunRate = 5;  //szansa na stuna
+	creatureStunRate = 5;  //szansa na stuna
 }
 
 Minotaur::~Minotaur()

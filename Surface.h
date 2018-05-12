@@ -18,12 +18,11 @@ private:
 	std::vector< std::vector<ColoredChar*> > surface;
 public:
 	Surface(int width, int height);
-	std::vector< std::vector<ColoredChar*> > get() const;
-	int printAt(const char s, int color, int row, int column);
+	std::vector< std::vector<ColoredChar*> > getSurface() const;
 	int printAt(const char *s, int color, int row, int column);
 	int printAt(std::string s, int color, int row, int column);
 	void print();
 	int blit(Surface surface, int row, int column);
-	void clear();
 };
+
 

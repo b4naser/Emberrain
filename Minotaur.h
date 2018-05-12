@@ -5,7 +5,7 @@ class Minotaur :
 	public Enemy
 {
 public:
-	Minotaur();
+	Minotaur(int, int, int);
 	~Minotaur();
 };
 #endif

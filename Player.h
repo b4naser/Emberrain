@@ -15,14 +15,13 @@ public:
 
 	void playerDicreaseHP(int damageTaken);
 	void playerIncreaseHP();
+	void playerIncreaseEnergy();
+	void playerDicreaseEnergy(int);
 
 	int playerAttack();
 	int playerCrushingAttack();
 
-	void playerIncreaseEnergy();
-	int playerShieldBash();
-	bool isDodge();
-	void getDicreasePlayerEnergy(int);
+	bool playerDodging(); // gracz unika
 
 	int getPlayerDefence();
 	std::string getPlayerName();
@@ -31,9 +30,6 @@ public:
 	int getPlayerTurnAttackValue()const;
 	int getPlayerDodgeRate() const;
 	int getPlayerStrengh() const;
-
-
 	void setPlayerName(std::string name);
-
 };
 #endif // !PLAYER_H

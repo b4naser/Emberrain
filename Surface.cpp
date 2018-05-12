@@ -9,7 +9,7 @@ ColoredChar::ColoredChar(const char c, int color) : c(c), color(color)
 
 int ColoredChar::getColor() const
 /*
-	Zwraca kolor znaku
+Zwraca kolor znaku
 */
 {
 	return this->color;
@@ -17,40 +17,23 @@ int ColoredChar::getColor() const
 
 char ColoredChar::getChar() const
 /*
-	Zwraca znak
+Zwraca znak
 */
 {
 	return this->c;
 }
 
-/*
-	TODO: Przy printAt nie sprawdzane jest czy nie przekroczono wymiaru wektora
-*/
-
 Surface::Surface(int width, int height)
 /*
-	Ustala rozmiar wektora
+Ustala rozmiar wektora
 */
 {
-	this->surface.resize(height, std::vector<ColoredChar*>(width, new ColoredChar(' ', 0)));
-}
-
-int Surface::printAt(const char s, int color, int row, int column)
-/*
-Dodaje znak do wektora na ustalona pozycje
-*/
-{
-	if (this->surface[row].size() < column)
-		return 0;
-
-	this->surface[row][column] = new ColoredChar(s, color);
-
-	return 1;
+	this->surface.resize(height, std::vector<ColoredChar*>(width, new ColoredChar('x', 55)));
 }
 
 int Surface::printAt(const char *s, int color, int row, int column)
 /*
-	Dodaje ciag znakow do wektora na ustalona pozycje
+Dodaje ci¹g znaków do wektora na ustalon¹ pozycje
 */
 {
 	if (this->surface[row].size() < (strlen(s) + column))
@@ -66,7 +49,7 @@ int Surface::printAt(const char *s, int color, int row, int column)
 
 int Surface::printAt(std::string s, int color, int row, int column)
 /*
-	Dodaje ciag znakow do wektora na ustalona pozycje
+Dodaje ci¹g znaków do wektora na ustalon¹ pozycje
 */
 {
 	if (this->surface[row].size() < (s.size() + column))
@@ -84,9 +67,9 @@ void Surface::print()
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	for (int y = 0; y <this->surface.size(); y++)
+	for (int y = 0; y < this->getSurface().size(); y++)
 	{
-		for (int x = 0; x < this->surface[0].size(); x++)
+		for (int x = 0; x < this->getSurface()[0].size(); x++)
 		{
 			SetConsoleTextAttribute(hConsole, this->surface[y][x]->getColor());
 			std::cout << this->surface[y][x]->getChar();
@@ -98,38 +81,23 @@ void Surface::print()
 }
 
 int Surface::blit(Surface surface, int row, int column)
-/*
-	Naklada innego Surface'a zaczynajac od podanego lewego gornego rogu
-*/
 {
-	if (this->surface.size() < (this->surface.size() + row) || this->surface[0].size() < (this->surface[0].size() + column))
+	std::cout << "---" << (this->surface.size() < (surface.getSurface().size() + row)) << "---" << std::endl;
+
+	if (this->surface.size() < (surface.getSurface().size() + row) || this->surface[0].size() < (surface.getSurface()[0].size() + column))
 		return 0;
 
-	for (int y = 0; y < this->surface.size(); y++)
+	for (int y = 0; y < surface.getSurface().size(); y++)
 	{
-		for (int x = 0; x < this->surface[0].size(); x++)
+		for (int x = 0; x < surface.getSurface()[0].size(); x++)
 		{
-			this->surface[row + y][column + x] = this->surface[y][x];
+			this->surface[row + y][column + x] = surface.getSurface()[y][x];
 		}
 	}
 	return 1;
 }
 
-void Surface::clear()
-/*
-	Do optymalizacji
-*/
-{
-	for (int y = 0; y <this->surface.size(); y++)
-	{
-		for (int x = 0; x < this->surface[0].size(); x++)
-		{
-			this->surface[y][x] = new ColoredChar(' ', 0);
-		}
-	}
-}
-
-std::vector< std::vector<ColoredChar*> > Surface::get() const
+std::vector< std::vector<ColoredChar*> > Surface::getSurface() const
 {
 	return this->surface;
 }

@@ -5,26 +5,19 @@ void Enemy::creatureHpDicrease(int damageDone)
 	creatureHp = creatureHp - (damageDone-creatureDefence);
 }
 
-int Enemy::getCreatureHp() const 
+int Enemy::getCreatureHp() const //zwraca hp
 {
 	return creatureHp;
 }
-
 int Enemy::getCreatureStrengh() const
 {
 	return creatureStrengh;
 }
-
 int Enemy::getCreatureDodgeRate() const
 {
 	return creatureDodgeRate;
 }
-
-
-
-
-
- bool Enemy::creatureDodge() const //zwraca ilosc uniku
+ bool Enemy::creatureDodge() const //zwraca ilosc uniku procentowo
 {
 	 int temp = (std::rand() % 100);
 		 if (temp <= creatureDodgeRate)
@@ -34,7 +27,7 @@ int Enemy::getCreatureDodgeRate() const
 
 int Enemy::creatureAttack()
 {
-	int attack = ( (std::rand() % ((creatureStrengh/2)+1) ) + (creatureStrengh / 2) );
+	int attack = (std::rand() % (creatureStrengh - (creatureStrengh / 2)) + creatureStrengh / 2);
 	creatureTurnAttackValue = attack;
 	return attack;
 }
@@ -53,14 +46,14 @@ int Enemy::getCreatureDefence() const
 {
 	return creatureDefence;
 }
-bool Enemy::vampireBite() 
+bool Enemy::creatureReturningLife() //funckja przywracajaca zdrowie wampirowi (równoœæ ataku vampira)
 {
-	if ((std::rand() % 100) <= LifeSteal) return true;
+	if ((std::rand() % 100) <= creatureLifeSteal) return true;
 	else						        	return false;
 	return false;
 }
 
-void Enemy::lifeStealing(int def)
+void Enemy::creatureTryLifeStealing(int def)
 {
 	if (creatureHp != 120) {
 		creatureHp += (getCreatureTurnAttackValue()-def);
@@ -70,24 +63,21 @@ void Enemy::lifeStealing(int def)
 
 }
 
-int Enemy::creatureLifeStealRate()
+bool Enemy::creatureTryStun()  // zwraca prawde jesli jest mana  // zwraca falsz jesli nie ma many lub nie wylosowalo sie
 {
-	return LifeSteal;
-}
-bool Enemy::minotaurStun()  
-{
-	if ((std::rand() % 100) <= minotaurStunRate) return true;
+	if ((std::rand() % 100) <= creatureStunRate) return true;
 	else										 return false;
 }
 
+int Enemy::getCreatureLifeStealingRate()const
+{
+	return creatureLifeSteal;
+}
 Enemy::Enemy()
 {
 }
-
-
-
-int Enemy::getMinotaurStunRate()
+int Enemy::getCreatureStunRate()const
 {
-	return minotaurStunRate;
+	return creatureStunRate;
 }
 

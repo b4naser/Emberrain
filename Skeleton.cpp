@@ -1,15 +1,16 @@
 #include "Skeleton.h"
-Skeleton::Skeleton()
+Skeleton::Skeleton(int atakPlayera, int obronaPlayera, int hpPlayera)
 {
 	creatureName = "Szkielet";
-	creatureHp = 100;
-	minotaurStunRate = 0;
-	LifeSteal = 0;
-	creatureDodgeRate = 10; //szansa na dodge 
-	creatureStrengh = 10;
+	creatureHp = std::rand() % hpPlayera /2 + hpPlayera / 2 ;
+	creatureStunRate = 0;
+	creatureLifeSteal = 0;
+	creatureDodgeRate = 20; //szansa na dodge 
+	creatureStrengh = std::rand() % (atakPlayera-7) + 3;
 	creatureDefence = 2;
 }
 
 Skeleton::~Skeleton()
 {
 }
+

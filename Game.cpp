@@ -1,8 +1,12 @@
 #include <Windows.h>
+#include <typeinfo>
 #include <iostream>
 #include <conio.h>
 #include "Game.h"
 #include "Map.h"
+#include "Fight.h"
+#include "Player.h"
+#include "GameOver.h"
 
 using namespace std;
 
@@ -44,8 +48,10 @@ Game::Game()
 
 void Game::run()
 {
+	Player p;
 	// Inicjalizuje wszystkie Stage'e
-	Map* map = new Map();
+	Map* map = new Map(&p);
+	GameOver* gameOver = new GameOver();
 
 	// Ustawia domyslny stage
 	stage = map;
@@ -53,32 +59,44 @@ void Game::run()
 	// Przechowuje wpisana komende
 	char cmd;
 
-	// Pozycja na ktora ustawiany jest kursor po kazdej iteracji petli while
-	COORD cursorPosition{ 0, 0 };
+	// Pobieranie nicku gracza
+	COORD cursorPos{ 30, 10 };
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "Wpisz imie bohatera:";
+
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+
+	std::string playerName;
+
+	std::cin >> playerName;
+	p.setPlayerName(playerName);
+
+	system("cls");
 
 	while(this->running)
 	{
 		// Wyswietla UI
 		stage->show();
-
+		
 		// Czeka na wpisanie znaku
 		cmd = _getch();
 
 		//Obsluguje wpisany znak, jesli komenda nie dotyczy przelaczania interfejsow lub wyjscia przekazuje ja do aktualnego Stage'a
-		switch (cmd)
-		{
-		case 'i':
+		if(this->gameCommandEnable && cmd == 'i')
 			cout << "Inventory";
-			break;
-		case 'c':
+		else if (this->gameCommandEnable && cmd == 'c')
 			cout << "Stats";
-			break;
-		case 'q':
+		else if (cmd == 'q')
 			this->running = false;
-			break;
-		default:
+		else
 			stage->command(cmd);
-			break;
+
+		if (map->isDefeated())
+		{
+			stage = gameOver;
+			this->gameCommandEnable = false;
 		}
 	}
 }

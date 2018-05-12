@@ -9,6 +9,7 @@ private:
 	HANDLE hConsole;
 	Surface* gameSurface;
 	Stage *stage;
+	bool gameCommandEnable = true;
 public:
 	Game();
 	void run();

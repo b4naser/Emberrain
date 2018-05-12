@@ -4,7 +4,7 @@
 class Skeleton :public Enemy
 {
 public:
-	Skeleton();
+	Skeleton(int, int, int);
 	~Skeleton();
 };
 #endif

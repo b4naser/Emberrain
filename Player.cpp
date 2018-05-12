@@ -4,7 +4,7 @@ Player::Player()
 {
 	playerHp = 140;
 	playerStrengh = 14;
-	playerDefence = 5;
+	playerDefence = 2;
 	playerEnergy = 100;
 	playerDodgdeRate = 5;
 }
@@ -16,7 +16,7 @@ int Player::getPlayerHP()
 
 void Player::playerDicreaseHP(int damageTaken)
 {
-	playerHp -= (damageTaken - playerDefence);
+	playerHp = playerHp - (damageTaken - playerDefence);
 }
 
 void Player::playerIncreaseHP()
@@ -29,7 +29,7 @@ void Player::playerIncreaseHP()
 
 int Player::playerAttack()
 {
-	int attack = ((std::rand() % (playerStrengh - 8)) + 8);
+	int attack = (std::rand() % (playerStrengh - (playerStrengh/2) ) + playerStrengh/2);
 	playerTurnAttackValue = attack;
 	return attack;
 }
@@ -58,7 +58,7 @@ void Player::playerIncreaseEnergy()
 	
 }
 
-bool Player::isDodge()
+bool Player::playerDodging()
 {
 	int temp = (std::rand() % 100);
 	if (temp <= playerDodgdeRate)
@@ -66,7 +66,7 @@ bool Player::isDodge()
 	return false;
 }
 
-void Player::getDicreasePlayerEnergy(int x)
+void Player::playerDicreaseEnergy(int x)
 {
 	playerEnergy -= x;
 }

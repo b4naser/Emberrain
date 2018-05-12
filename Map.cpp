@@ -2,16 +2,17 @@
 #include <Windows.h>
 #include <vector>
 #include "Map.h"
-
-#include <typeinfo>
+#include "Fight.h"
 
 using namespace std;
 
 COORD mapPosition{ 0, 0 };
 COORD mapPrintSize{ 7, 5 }; // Niezale¿nie od podania liczby parzystej czy nieparzystej znak gracza zawsze bêdzie na œrodku. W przypadku podania parzystej rozmiar zostanie zwiêkszony o 1
 
-Map::Map()
+Map::Map(Player *p)
 {
+	this->player = p;
+
 	// Powiêksza wektor mapy
 	this->map.resize(this->MAP_HEIGHT, vector<int>(this->MAP_WIDTH, 0));
 
@@ -31,9 +32,10 @@ void Map::show()
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD cursorPos;
 
-	for (int x = 50; x < 70; x++)
+	// Czyszczenie prawego "boxa"
+	for (int x = 50; x < 76; x++)
 	{
-		for (int y = 5; y < 10; y++)
+		for (int y = 15; y < 20; y++)
 		{
 			cursorPos.X = x;
 			cursorPos.Y = y;
@@ -42,6 +44,49 @@ void Map::show()
 			cout << " ";
 		}
 	}
+
+	SetConsoleTextAttribute(hConsole, 15);
+
+	cursorPos.X = 50;
+	cursorPos.Y = 5;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << this->player->getPlayerName();
+
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << "Max Health:   ";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << this->player->getPlayerHP();
+
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << "Max Energy:   ";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << this->player->getPlayerEnergy();
+
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << "Max Strength: ";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << this->player->getPlayerStrengh();
+
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << "Max Defense:  ";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << this->player->getPlayerDefence();
+
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << "Dodge Rate:   ";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << this->player->getPlayerHP();
 
 	for (int x = 2; x < this->MAP_WIDTH+2; x++)
 	{
@@ -134,10 +179,24 @@ void Map::show()
 					if (this->enemies[k][1] == y && this->enemies[k][0] == x)
 					{
 						cursorPos.X = 50;
-						cursorPos.Y = 5;
+						cursorPos.Y = 15;
 						SetConsoleCursorPosition(hConsole, cursorPos);
+						SetConsoleTextAttribute(hConsole, 12);
+						cout << "e";
 						SetConsoleTextAttribute(hConsole, 15);
-						cout << "z - zaatakuj " << enemies[k][2];
+						cout << ": zaatakuj ";
+						switch (enemies[k][2])
+						{
+						case 1:
+							cout << "Szkieleta";
+							break;
+						case 2:
+							cout << "Minotaura";
+							break;
+						case 3:
+							cout << "Wampira";
+							break;
+						}
 						target = k;
 						goto finish;
 					}
@@ -150,10 +209,19 @@ void Map::show()
 		if (playerPos.x == portalPos.x && playerPos.y == portalPos.y)
 		{
 			cursorPos.X = 50;
-			cursorPos.Y = 6;
+			cursorPos.Y = 16;
 			SetConsoleCursorPosition(hConsole, cursorPos);
-			SetConsoleTextAttribute(hConsole, 15);
-			cout << "g - zejdz nizej";
+			SetConsoleTextAttribute(hConsole, 12);
+			if (this->enemies.size() != 0)
+			{
+				cout << "Pokonaj wszystkich by uzyc";
+			}
+			else
+			{
+				cout << "r";
+				SetConsoleTextAttribute(hConsole, 15);
+				cout << ": zejdz nizej";
+			}
 		}
 	}
 }
@@ -180,16 +248,25 @@ void Map::command(char cmd)
 		if (this->map[this->playerPos.y][this->playerPos.x + 1] == 0)
 			this->playerPos.x += 1;
 	}
-	else if (cmd == 'g' && playerPos.x == portalPos.x && playerPos.y == portalPos.y)
+	else if (cmd == 'r' && playerPos.x == portalPos.x && playerPos.y == portalPos.y && this->enemies.size() == 0)
 	{
 		RandomMap rm(this->MAP_WIDTH, this->MAP_HEIGHT);
 		rm.generateMap();
 		this->map = rm.getMap();
 		this->generatePos();
 	}
-	else if (cmd == 'a' && target != -1)
+	else if (cmd == 'e' && target != -1)
 	{
-		// Wywolanie fight
+		Fight f(*this->player, this->enemies[this->target][2]);
+		if (f.fightStart())
+		{
+			this->enemies.erase(this->enemies.begin() + target);
+		}
+		else
+			this->defeated = true;
+
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+		system("cls");
 	}
 }
 
@@ -223,12 +300,15 @@ void Map::generatePos()
 	// Flaga uzywana do sprawdzania, czy na danej pozycji znajduje sie juz przeciwnik
 	bool empty_space;
 
-	while (this->enemies.size() < 10)
+	while (this->enemies.size() < 3)
 	{
 		empty_space = true;
 		x = rand() % this->MAP_WIDTH;
 		y = rand() % this->MAP_HEIGHT;
 		type = rand() % 3 + 1;
+
+		if (portalPos.x == x && portalPos.y == y)
+			break;
 
 		if (this->map[y][x] == 0)
 		{
@@ -246,6 +326,11 @@ void Map::generatePos()
 				this->enemies.push_back({ x, y, type });
 		}
 	}
+}
+
+bool Map::isDefeated() const
+{
+	return this->defeated;
 }
 
 Map::~Map()

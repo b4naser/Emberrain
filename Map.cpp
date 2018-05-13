@@ -258,6 +258,7 @@ void Map::command(char cmd)
 	else if (cmd == 'e' && target != -1)
 	{
 		Fight f(*this->player, this->enemies[this->target][2]);
+		system("cls");
 		if (f.fightStart())
 		{
 			this->enemies.erase(this->enemies.begin() + target);

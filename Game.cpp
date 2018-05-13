@@ -4,6 +4,7 @@
 #include <conio.h>
 #include "Game.h"
 #include "Map.h"
+#include "Equipment.h"
 #include "Fight.h"
 #include "Player.h"
 #include "GameOver.h"
@@ -53,6 +54,7 @@ void Game::run()
 	Player p;
 	// Inicjalizuje wszystkie Stage'e
 	Map* map = new Map(&p);
+	Equipment* equipment = new Equipment();
 	GameOver* gameOver = new GameOver();
 
 	// Ustawia domyslny stage
@@ -108,10 +110,18 @@ void Game::run()
 		cmd = _getch();
 
 		//Obsluguje wpisany znak, jesli komenda nie dotyczy przelaczania interfejsow lub wyjscia przekazuje ja do aktualnego Stage'a
-		if(this->gameCommandEnable && cmd == 'i')
-			cout << "Inventory";
-		else if (this->gameCommandEnable && cmd == 'c')
-			cout << "Stats";
+		if (this->gameCommandEnable && cmd == 'i')
+		{
+			SetConsoleTextAttribute(hConsole, 15);
+			system("cls");
+			stage = equipment;
+		}
+		else if (this->gameCommandEnable && cmd == 'm')
+		{
+			SetConsoleTextAttribute(hConsole, 15);
+			system("cls");
+			stage = map;
+		}
 		else if (cmd == 'q')
 			this->running = false;
 		else

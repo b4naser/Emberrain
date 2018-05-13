@@ -48,6 +48,8 @@ Game::Game()
 
 void Game::run()
 {
+	COORD cursorPos;
+
 	Player p;
 	// Inicjalizuje wszystkie Stage'e
 	Map* map = new Map(&p);
@@ -59,8 +61,30 @@ void Game::run()
 	// Przechowuje wpisana komende
 	char cmd;
 
+	// Wyswietlenie tytulu
+	cursorPos.X = 9;
+	cursorPos.Y = 5;
+
+	string titleText[6] = {
+		"___________      ___                                __        ",
+		"\\_   _____/ _____\\_ |__   _______________________  |__| ____  ",
+		" |    __)_ /     \\| __ \\_/ __ \\_  __ \\_  __ \\__  \\ |  |/    \\ ",
+		" |        \\  Y Y  \\ \\_\\ \\  ___/|  | \\/|  | \\// __ \\|  |   |  \\",
+		"/_______  /__|_|  /___  /\\___  >__|   |__|  (____  /__|___|  /",
+		"        \\/      \\/    \\/     \\/                  \\/        \\/ "
+	};
+
+	SetConsoleTextAttribute(hConsole, 5);
+	for (int i = 0; i < 6; i++)
+	{
+		SetConsoleCursorPosition(hConsole, cursorPos);
+		std::cout << titleText[i];
+		cursorPos.Y += 1;
+	}
+
 	// Pobieranie nicku gracza
-	COORD cursorPos{ 30, 10 };
+	cursorPos.X = 30;
+	cursorPos.Y = 15;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 15);
 	cout << "Wpisz imie bohatera:";

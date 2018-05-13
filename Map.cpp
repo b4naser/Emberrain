@@ -72,7 +72,7 @@ void Map::show()
 	SetConsoleTextAttribute(hConsole, 7);
 	cout << "Max Strength: ";
 	SetConsoleTextAttribute(hConsole, 10);
-	cout << this->player->getPlayerStrengh();
+	cout << this->player->getPlayerStrength();
 
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);

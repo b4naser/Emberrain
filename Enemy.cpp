@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-void Enemy::creatureHpDicrease(int damageDone)
+void Enemy::creatureHpDecrease(int damageDone)
 {
 	creatureHp = creatureHp - (damageDone-creatureDefence);
 }
@@ -9,9 +9,9 @@ int Enemy::getCreatureHp() const //zwraca hp
 {
 	return creatureHp;
 }
-int Enemy::getCreatureStrengh() const
+int Enemy::getCreatureStrength() const
 {
-	return creatureStrengh;
+	return creatureStrength;
 }
 int Enemy::getCreatureDodgeRate() const
 {
@@ -27,9 +27,11 @@ int Enemy::getCreatureDodgeRate() const
 
 int Enemy::creatureAttack()
 {
-	int attack = (std::rand() % (creatureStrengh - (creatureStrengh / 2)) + creatureStrengh / 2);
-	creatureTurnAttackValue = attack;
-	return attack;
+	std::mt19937 randomThings;
+	randomThings.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(creatureStrength / 2, creatureStrength);
+	creatureTurnAttackValue = randomAttack(randomThings);
+	return randomAttack(randomThings);
 }
 
 std::string Enemy::getCreatureName() const
@@ -49,18 +51,15 @@ int Enemy::getCreatureDefence() const
 bool Enemy::creatureReturningLife() //funckja przywracajaca zdrowie wampirowi (równoœæ ataku vampira)
 {
 	if ((std::rand() % 100) <= creatureLifeSteal) return true;
-	else						        	return false;
-	return false;
+	else						        		  return false;
 }
 
-void Enemy::creatureTryLifeStealing(int def)
+void Enemy::creatureTryLifeSteal(int def)
 {
 	if (creatureHp != 120) {
 		creatureHp += (getCreatureTurnAttackValue()-def);
 		if (creatureHp > 120) creatureHp = 120;
 	}
-		
-
 }
 
 bool Enemy::creatureTryStun()  // zwraca prawde jesli jest mana  // zwraca falsz jesli nie ma many lub nie wylosowalo sie
@@ -69,7 +68,7 @@ bool Enemy::creatureTryStun()  // zwraca prawde jesli jest mana  // zwraca falsz
 	else										 return false;
 }
 
-int Enemy::getCreatureLifeStealingRate()const
+int Enemy::getCreatureLifeStealRate()const
 {
 	return creatureLifeSteal;
 }

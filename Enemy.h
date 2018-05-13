@@ -1,26 +1,26 @@
+#pragma once
 #include <string>
 #include <cstdlib>
 #include <time.h>
-#ifndef ENEMY_H
-#define ENEMY_H
+#include <random>
 class Enemy
 {
 protected:
-	int creatureHp,creatureDefence,creatureStrengh;
+	int creatureHp,creatureDefence,creatureStrength;
 	std::string creatureName;
 	int creatureTurnAttackValue,creatureLifeSteal,creatureLifeStealRate,creatureStunRate, creatureDodgeRate ;   //potrzebna zmiena do zwracania losowanego ataku 
 public:
-	virtual  void creatureHpDicrease(int);
+	virtual  void creatureHpDecrease(int);
 	virtual  bool creatureDodge()const;
 	virtual  int creatureAttack();
 	virtual bool creatureReturningLife();
-	virtual void creatureTryLifeStealing(int);
+	virtual void creatureTryLifeSteal(int);
 	virtual bool creatureTryStun();
 
 	virtual int getCreatureStunRate()const;
-	virtual int getCreatureLifeStealingRate()const;
+	virtual int getCreatureLifeStealRate()const;
 	virtual int getCreatureDodgeRate() const;
-	virtual int getCreatureStrengh() const;
+	virtual int getCreatureStrength() const;
 	virtual int getCreatureDefence() const;
 	virtual  int getCreatureHp() const;
 	virtual std::string getCreatureName()const;
@@ -28,4 +28,3 @@ public:
 public:
 	Enemy();
 };
-#endif

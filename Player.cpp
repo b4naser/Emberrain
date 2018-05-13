@@ -3,7 +3,7 @@
 Player::Player()
 {
 	playerHp = 140;
-	playerStrengh = 14;
+	playerStrength = 14;
 	playerDefence = 2;
 	playerEnergy = 100;
 	playerDodgdeRate = 5;
@@ -14,39 +14,36 @@ int Player::getPlayerHP()
 	return playerHp;
 }
 
-void Player::playerDicreaseHP(int damageTaken)
+void Player::playerDecreaseHP(int damageTaken)
 {
-	playerHp = playerHp - (damageTaken - playerDefence);
-}
-
-void Player::playerIncreaseHP()
-{
-	if (playerEnergy >= 30) {
-		playerEnergy -= 20; 
-		playerHp += ( (std::rand() % 15) + playerDefence );
-	}
+	if (damageTaken < playerDefence)
+		playerHp = playerHp;
+	else
+		playerHp = playerHp - (damageTaken - playerDefence);
 }
 
 int Player::playerAttack()
 {
-	int attack = (std::rand() % (playerStrengh - (playerStrengh/2) ) + playerStrengh/2);
-	playerTurnAttackValue = attack;
-	return attack;
+	std::mt19937 randomThings;
+	randomThings.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength / 2, playerStrength);
+	playerTurnAttackValue = randomAttack(randomThings);
+	return randomAttack(randomThings);
 }
 
 int Player::playerCrushingAttack()
 {
-		int specialAttack = ((std::rand() % (playerStrengh)) + 12);
-		playerTurnAttackValue = specialAttack;
-		return specialAttack;
-	
+	std::mt19937 randomThings;
+	randomThings.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength,playerStrength+5);
+	playerTurnAttackValue = randomAttack(randomThings);
+	return randomAttack(randomThings);
 }
 
 int Player::getPlayerEnergy()
 {
 	return playerEnergy;
 }
-
 void Player::playerIncreaseEnergy()
 {
 	if (playerEnergy < 100) {
@@ -57,18 +54,17 @@ void Player::playerIncreaseEnergy()
 	}
 	
 }
-
 bool Player::playerDodging()
 {
-	int temp = (std::rand() % 100);
+	int temp = std::rand() % 100;
 	if (temp <= playerDodgdeRate)
 		return true;
 	return false;
 }
 
-void Player::playerDicreaseEnergy(int x)
+void Player::playerDecreaseEnergy(int energyDecrease)
 {
-	playerEnergy -= x;
+	playerEnergy -= energyDecrease;
 }
 
 std::string Player::getPlayerName()
@@ -86,6 +82,10 @@ void Player::setPlayerName(std::string name)
 	playerName = name;
 }
 
+Player::~Player()
+{
+}
+
 int Player::getPlayerTurnAttackValue() const
 {
 	return playerTurnAttackValue;
@@ -96,13 +96,9 @@ int Player::getPlayerDodgeRate() const
 	return playerDodgdeRate;
 }
 
-int Player::getPlayerStrengh() const
+int Player::getPlayerStrength() const
 {
-	return playerStrengh;
+	return playerStrength;
 }
 
-
-Player::~Player()
-{
-}
 

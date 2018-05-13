@@ -1,22 +1,20 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
 #include <cstdlib>
+#include <random>
 #include <string>
 class Player
 {
 private :
-	int playerHp,playerStrengh,playerDefence,playerEnergy,playerDodgdeRate;
+	int playerHp,playerStrength,playerDefence,playerEnergy,playerDodgdeRate;
 	std::string playerName;
 
 	int playerTurnAttackValue;
 public:
 	Player();
-	~Player();
 
-	void playerDicreaseHP(int damageTaken);
-	void playerIncreaseHP();
+	void playerDecreaseHP(int damageTaken);
 	void playerIncreaseEnergy();
-	void playerDicreaseEnergy(int);
+	void playerDecreaseEnergy(int);
 
 	int playerAttack();
 	int playerCrushingAttack();
@@ -29,7 +27,7 @@ public:
 	int getPlayerHP();
 	int getPlayerTurnAttackValue()const;
 	int getPlayerDodgeRate() const;
-	int getPlayerStrengh() const;
+	int getPlayerStrength() const;
 	void setPlayerName(std::string name);
+	~Player();
 };
-#endif // !PLAYER_H

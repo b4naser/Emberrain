@@ -1,5 +1,4 @@
-#ifndef FIGHT_H
-#define FIGHT_H
+#pragma once
 #include "Vampire.h"
 #include "Player.h"
 #include "Minotaur.h"
@@ -9,29 +8,23 @@
 #include <string>
 #include <Windows.h>
 #include <wctype.h>
-//asdsadasdas//
 class Fight
-{
+{  
 private:
-	CONST short STALA = 24;
-	CONST short STALA_RUNDY = 37;
+	CONST short actionCOORD_X = 24;
+	CONST short roundCOORD_X = 37;
 	CONST int STALA_INT_KOLORU_TEXTU = 119;//34;
 	CONST int STALA_KOLORU_TEXTU_PLAYERA = 112;
 	CONST int STALA_KOLORU_STATYSTYK = 124;
 	CONST int STALA_KOLORU_TEXTU_ENEMY = 112;
 	CONST int STALA_KOLORU_UMIEJETNOSCI = 117;
 	CONST int STALA_KOLORU_AKCJI = 113;
-	int runda = 0;
-	short rzad_Akcji = 5;
-	short rzad_Rundy = 1;
-	bool condition = true;   //warunek potrzebny do petli ..wajcha..
-	int IMPORTANT_COORD_HPBAR_PLAYER_X;
-	int IMPORTANT_COORD_HPBAR_PLAYER_Y;
-	int IMPORTANT_COORD_HPBAR_ENEMY_X;
-	int IMPORTANT_COORD_HPBAR_ENEMY_Y;
+	int round = 0;			//licznik rund
+	short actionCOORD_Y = 5; //inkrementacja
+	short roundCOORD_Y = 1;		//inkrementacja
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD pozycjaPokazywaniaAkcji = { STALA, rzad_Akcji };
-	COORD pozycjaPokazywaniaRundy = { STALA_RUNDY, rzad_Rundy };
+	COORD fightPosition = { actionCOORD_X, actionCOORD_Y };
+	COORD roundLoopPosition = { roundCOORD_X, roundCOORD_Y };
 
 	Player player;
 	Enemy creature;
@@ -48,13 +41,8 @@ private:
 	void clearChooseField(bool);				//czysci pole wyboru akcji
 	void infoWrongAction(int);   //bl1ad 1-brak energi 2-brak wlasciwej akcji
 	void normalAttack();
-							
 public:
 	Fight::Fight(Player& ,int);  //Flaga int 1 =szkielet,2=minotaur 3=vampire
 	bool fightStart();
 	~Fight();
-
-
 };
-
-#endif // !FIGHT_H

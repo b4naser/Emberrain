@@ -2,15 +2,26 @@
 
 
 
-Minotaur::Minotaur(int atakPlayera, int obronaPlayera,int hpPlayera)
+Minotaur::Minotaur(int aPlayer, int dPlayer, int hpPlayer)
 {
+
+	std::mt19937 randomThings;
+	randomThings.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> randomHP(hpPlayer -20, hpPlayer + 20);
+	std::uniform_int_distribution<std::mt19937::result_type> randomDefence(dPlayer-1, dPlayer);
+	std::uniform_int_distribution<std::mt19937::result_type> randomStrength(aPlayer -3, aPlayer + 3);
+	
 	creatureName = "Minotaur";
-	creatureHp = creatureHp = std::rand() % hpPlayera / 2 + hpPlayera / 2 + 10;
+	creatureHp = randomHP(randomThings);
 	creatureLifeSteal = 0;
 	creatureDodgeRate = 5; //dodge
-	creatureStrengh = 16; //sila uderzenia
-	creatureDefence = 4; //obrona
-	creatureStunRate = 5;  //szansa na stuna
+	creatureStrength = randomStrength(randomThings);
+	creatureDefence = randomDefence(randomThings);
+
+	if(aPlayer>17 || dPlayer>5)
+		creatureStunRate = 10;  //szansa na stuna
+	else
+		creatureStunRate = 5;  //szansa na stuna
 }
 
 Minotaur::~Minotaur()

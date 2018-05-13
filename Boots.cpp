@@ -1,5 +1,4 @@
 #include "Boots.h"
-#include "stdafx.h"
 
 Boots::Boots() : DefenseValue(2), AddDodgeRateValue(1)
 {

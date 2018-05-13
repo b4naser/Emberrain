@@ -1,5 +1,4 @@
 #include "Armor.h"
-#include "stdafx.h"
 
 Armor::Armor() : DefenseValue(5),AddHpValue(20)
 {

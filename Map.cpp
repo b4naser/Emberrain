@@ -88,6 +88,20 @@ void Map::show()
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerHP();
 
+	cursorPos.Y += 2;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << "i";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << ": View equipment";
+
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << "q";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << ": Quit";
+
 	for (int x = 2; x < this->MAP_WIDTH+2; x++)
 	{
 		for (int y = 2; y < this->MAP_HEIGHT+2; y++)
@@ -184,17 +198,17 @@ void Map::show()
 						SetConsoleTextAttribute(hConsole, 12);
 						cout << "e";
 						SetConsoleTextAttribute(hConsole, 15);
-						cout << ": zaatakuj ";
+						cout << ": fight ";
 						switch (enemies[k][2])
 						{
 						case 1:
-							cout << "Szkieleta";
+							cout << "Skeleton";
 							break;
 						case 2:
-							cout << "Minotaura";
+							cout << "Minotaur";
 							break;
 						case 3:
-							cout << "Wampira";
+							cout << "Vampire";
 							break;
 						}
 						target = k;
@@ -214,13 +228,13 @@ void Map::show()
 			SetConsoleTextAttribute(hConsole, 12);
 			if (this->enemies.size() != 0)
 			{
-				cout << "Pokonaj wszystkich by uzyc";
+				cout << "defeat all enemies to use";
 			}
 			else
 			{
 				cout << "r";
 				SetConsoleTextAttribute(hConsole, 15);
-				cout << ": zejdz nizej";
+				cout << ": go down";
 			}
 		}
 	}
@@ -258,7 +272,7 @@ void Map::command(char cmd)
 	else if (cmd == 'e' && target != -1)
 	{
 		Fight f(*this->player, this->enemies[this->target][2]);
-		system("cls");
+		//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 		if (f.fightStart())
 		{
 			this->enemies.erase(this->enemies.begin() + target);

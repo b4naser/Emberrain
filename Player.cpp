@@ -53,7 +53,10 @@ void Player::playerIncreaseEnergy()
 }
 bool Player::playerDodging()
 {
-	int temp = std::rand() % 100;
+	std::mt19937 randomThings;
+	randomThings.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> dodge(0, 100);
+	int temp = dodge(randomThings);
 	if (temp <= playerDodgdeRate)
 		return true;
 	return false;
@@ -97,3 +100,5 @@ int Player::getPlayerStrength() const
 {
 	return playerStrength;
 }
+
+

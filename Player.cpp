@@ -1,5 +1,4 @@
 #include "Player.h"
-#
 Player::Player()
 {
 	playerHp = 140;
@@ -16,10 +15,8 @@ int Player::getPlayerHP()
 
 void Player::playerDecreaseHP(int damageTaken)
 {
-	if (damageTaken < playerDefence)
-		playerHp = playerHp;
-	else
-		playerHp = playerHp - (damageTaken - playerDefence);
+	if (damageTaken > playerDefence)
+		playerHp = playerHp - damageTaken + playerDefence;
 }
 
 int Player::playerAttack()
@@ -28,7 +25,7 @@ int Player::playerAttack()
 	randomThings.seed(std::random_device()());
 	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength / 2, playerStrength);
 	playerTurnAttackValue = randomAttack(randomThings);
-	return randomAttack(randomThings);
+	return playerTurnAttackValue;
 }
 
 int Player::playerCrushingAttack()
@@ -37,7 +34,7 @@ int Player::playerCrushingAttack()
 	randomThings.seed(std::random_device()());
 	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength,playerStrength+5);
 	playerTurnAttackValue = randomAttack(randomThings);
-	return randomAttack(randomThings);
+	return playerTurnAttackValue;
 }
 
 int Player::getPlayerEnergy()
@@ -100,5 +97,3 @@ int Player::getPlayerStrength() const
 {
 	return playerStrength;
 }
-
-

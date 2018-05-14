@@ -73,8 +73,13 @@ void Enemy::creatureTryLifeSteal(int def)
 
 bool Enemy::creatureTryStun()  // zwraca prawde jesli jest mana  // zwraca falsz jesli nie ma many lub nie wylosowalo sie
 {
-	if ((std::rand() % 100) <= creatureStunRate) return true;
-	else										 return false;
+	std::mt19937 randomThings;
+	randomThings.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> stun(0, 100);
+	int temp = stun(randomThings);
+	if (temp <= creatureLifeSteal)
+		return true;
+	return false;
 }
 
 int Enemy::getCreatureLifeStealRate()const

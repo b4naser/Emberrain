@@ -20,7 +20,10 @@ int Enemy::getCreatureDodgeRate() const
 }
  bool Enemy::creatureDodge() const //zwraca ilosc uniku procentowo
 {
-	 int temp = (std::rand() % 100);
+	 std::mt19937 randomThings;
+	 randomThings.seed(std::random_device()());
+	 std::uniform_int_distribution<std::mt19937::result_type> dodge(0,100);
+	 int temp = dodge(randomThings);
 		 if (temp <= creatureDodgeRate)
 			 return true;
 	 return false;
@@ -49,10 +52,15 @@ int Enemy::getCreatureDefence() const
 {
 	return creatureDefence;
 }
-bool Enemy::creatureReturningLife() //funckja przywracajaca zdrowie wampirowi (równoœæ ataku vampira)
+bool Enemy::creatureReturningLife() //funckja przywracajaca zdrowie wampirowi (równość ataku vampira)
 {
-	if ((std::rand() % 100) <= creatureLifeSteal) return true;
-	else						        		  return false;
+	std::mt19937 randomThings;
+	randomThings.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> life(0, 100);
+	int temp = life(randomThings);
+	if (temp <= creatureLifeSteal)
+		return true;
+	return false;
 }
 
 void Enemy::creatureTryLifeSteal(int def)
@@ -80,3 +88,4 @@ int Enemy::getCreatureStunRate()const
 {
 	return creatureStunRate;
 }
+

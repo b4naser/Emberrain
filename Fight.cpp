@@ -1,6 +1,6 @@
 #include "Fight.h"
 #include <iostream>
-
+#include <conio.h>
 using namespace std;
 
 bool Fight::isFightEnded()
@@ -47,7 +47,7 @@ Fight::Fight(Player& play,int FLAGA)
 			<< endl;
 	}
 }
-bool Fight::fightStart()
+void Fight::fightStart()
 {
 
 		while (true) {
@@ -55,20 +55,21 @@ bool Fight::fightStart()
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_PLAYERA);
 			fightPlayerAttack();
 			
-			if (isFightEnded()) {  //warunek zakonczenia
+			if (isFightEnded()) 
+			{  //warunek zakonczenia
 				setHpBar();  
-				return true;
+				break;
 			}             
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_ENEMY);
 			fightCreatureAttack();
 			roundLoop();
-			if (isFightEnded()) {   //warunek zakonczenia
+			if (isFightEnded())
+			{   //warunek zakonczenia
 				setHpBar();  
-				return false;
+				break;
 			}		
 			setHpBar();
 			actionCOORD_Y++;
-
 			if (player.getPlayerEnergy() < 100) {
 				player.playerIncreaseEnergy();
 				setEnergyBar();
@@ -117,7 +118,6 @@ void Fight::infoWrongAction(int FLAG_ERROR)
 		fightPosition = { 30, 28 };
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		cout << "Wybierz prawidlowa akcje!";
-		clearChooseField(false);
 	}
 
 }
@@ -278,7 +278,7 @@ void Fight::showUIPlayerEnemy()
 
 	fightPosition = { 25,  2 };		
 	SetConsoleCursorPosition(hConsole, fightPosition);
-	cout << player.getPlayerName() << "      vs       " << creature.getCreatureName();
+	//cout << player.getPlayerName() << "      vs       " << creature.getCreatureName();
 
 	fightPosition = { tempCreatureX,  tempCreatureY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
@@ -415,85 +415,75 @@ void Fight::showUIPlayerEnemy()
 void Fight::fightPlayerAttack()
 {
 
-	int option;		// wybor playera
 	char ch;	    //w razie bledu
-	clearChooseField(true);
-	while (1) {
+	while (1)
+	{
 		fightPosition = {14, 28 };  //KOD:101
 		SetConsoleCursorPosition(hConsole, fightPosition);
-		if (scanf_s("%d", &option) != 1) {
-			while (ch = getchar() != '\n');
-			infoWrongAction(2);
-			Sleep(100);
+		ch = getch();
+		 
+		if (round % 5 == 0)
+		{
+			clearCombat();
+			actionCOORD_Y = 5;//WARNING TU TEZ ZMIEN!
+			fightPosition = { actionCOORD_X, actionCOORD_Y };
 		}
-		else if(option<=2) {
-
-			  //inkrementacja rundy
-			if (round % 5 == 0) {
-				clearCombat();
-				actionCOORD_Y = 5;//WARNING TU TEZ ZMIEN!
-				fightPosition = { actionCOORD_X, actionCOORD_Y };
-                      
-			}
-
-				switch (option) 
+				switch (ch) 
 					{
-					case 1:
-						if (creature.creatureDodge()) {
+					case '1':
+						if (creature.creatureDodge()) 
+						{
 							fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
 							SetConsoleCursorPosition(hConsole, fightPosition);
 							actionCOORD_Y++;
 							cout << creature.getCreatureName() << " unika ataku!";
-							clearChooseField(true);
-							break;
 						}
-						creature.creatureHpDecrease(player.playerAttack());
-
-						fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
-						SetConsoleCursorPosition(hConsole, fightPosition);
-						actionCOORD_Y++;
-
-						cout << player.getPlayerName();
-						printf(" atakuje:%d zostawiajac:%d",
-							player.getPlayerTurnAttackValue() - creature.getCreatureDefence(), creature.getCreatureHp());
-						clearChooseField(true);
-						break;
-					case 2:
-						if (creature.creatureDodge()) {
-							fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
-							SetConsoleCursorPosition(hConsole, fightPosition);
-							actionCOORD_Y++;
-							cout << creature.getCreatureName() << " unika ataku!";
-							if (player.getPlayerEnergy() >= 20) {
-								player.playerDecreaseEnergy(20);
-								setEnergyBar();
-							}
-							clearChooseField(true);
-							break;
-						}
-						else if (player.getPlayerEnergy() >= 20) {
-							player.playerDecreaseEnergy(20);
-							creature.creatureHpDecrease( player.playerCrushingAttack() );
+						else 
+						{
+							creature.creatureHpDecrease(player.playerAttack());
 							fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
 							SetConsoleCursorPosition(hConsole, fightPosition);
 							actionCOORD_Y++;
 							cout << player.getPlayerName();
 							printf(" atakuje:%d zostawiajac:%d",
-								player.getPlayerTurnAttackValue() - creature.getCreatureDefence(), creature.getCreatureHp());
-							setEnergyBar();
-							clearChooseField(true);
-							break;
+								player.getPlayerTurnAttackValue()-creature.getCreatureDefence(), creature.getCreatureHp());
 						}
-						else {
-								infoWrongAction(1);
-								clearChooseField(false);
-								continue;
-							}
+						break;
+					case '2':
+						if (player.getPlayerEnergy()<20) 
+						{
+							infoWrongAction(1);
+							continue;
+						}
+						else if (creature.creatureDodge()) 
+						{
+							player.playerDecreaseEnergy(20);
+							fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
+							SetConsoleCursorPosition(hConsole, fightPosition);
+							actionCOORD_Y++;
+							cout << creature.getCreatureName() << " unika ataku!";
+							setEnergyBar();
+						}
+						else 
+						{
+							player.playerDecreaseEnergy(20);
+							fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
+							creature.creatureHpDecrease( player.playerCrushingAttack() );
+							SetConsoleCursorPosition(hConsole, fightPosition);
+							actionCOORD_Y++;
+							cout << player.getPlayerName();
+							printf(" atakuje:%d zostawiajac:%d",
+							player.getPlayerTurnAttackValue() - creature.getCreatureDefence(), creature.getCreatureHp());
+							setEnergyBar();
+						}
+						break;
+					default:
+						infoWrongAction(2);
+						continue;
 					}
 				break;
-		}
-		else infoWrongAction(2);  //1 -brak energi 2-niewlasciwa akcja
 	}
+
 }
 void Fight::fightCreatureAttack() {
 	
@@ -503,15 +493,13 @@ void Fight::fightCreatureAttack() {
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		actionCOORD_Y++;
 		cout <<player.getPlayerName()<< " unika ataku!";
-		return;
 	}
-	else if ( (creature.getCreatureStunRate() > 0) && creature.creatureTryStun() ) 
+	else if ( (creature.getCreatureStunRate() > 0) && creature.creatureTryStun()) 
 	{
 			fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
 			SetConsoleCursorPosition(hConsole, fightPosition);
 			actionCOORD_Y++;
 			actionCOORD_Y++;
-
 			player.playerDecreaseHP(creature.creatureAttack());
 			cout << creature.getCreatureName();
 			printf(" atakuje:%d zostawiajac:%d",
@@ -520,10 +508,11 @@ void Fight::fightCreatureAttack() {
 			SetConsoleCursorPosition(hConsole, fightPosition);
 			actionCOORD_Y++;
 			cout << "Ogluszenie!";
+			roundLoop();
 			normalAttack();
-
 	}
-	else if ( (creature.getCreatureLifeStealRate() > 0) && creature.creatureReturningLife() ) {
+	else if ( (creature.getCreatureLifeStealRate() > 0) && creature.creatureReturningLife() )
+	{
 			if (creature.getCreatureHp() < 120) 
 			{
 				fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
@@ -540,10 +529,8 @@ void Fight::fightCreatureAttack() {
 				cout << "Wampir leczy sie za " << creature.getCreatureTurnAttackValue()-player.getPlayerDefence();
 			}
 			else normalAttack();
-		}
+	}
 	else normalAttack();
-
-
 
 }
 
@@ -559,6 +546,5 @@ void Fight::setEnergyBar()
 	else if (player.getPlayerEnergy() < 10)
 		xy = { 14,  6 };
 	SetConsoleCursorPosition(hConsole, xy);
-
 	cout << player.getPlayerEnergy();
 }

@@ -1,6 +1,6 @@
 #include "Armor.h"
 
-Armor::Armor() : DefenseValue(5),AddHpValue(20)
+Armor::Armor() : DefenseValue(2),AddHpValue(10)
 {
 }
 
@@ -17,7 +17,7 @@ int Armor::getAddHpValue() const
 void Armor::upgrade()
 {	
 	Level++;
-	DefenseValue += 3;
-	AddHpValue += 20;
+	DefenseValue += 2;
+	AddHpValue += 10;
 	
 }

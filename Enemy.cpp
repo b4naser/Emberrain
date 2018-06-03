@@ -3,7 +3,7 @@
 void Enemy::creatureHpDecrease(int damageDone)
 {
 	if(damageDone>creatureDefence)
-		creatureHp = creatureHp - damageDone + creatureDefence;
+		creatureHp = creatureHp - damageDone + creatureDefence/2;
 }
 
 int Enemy::getCreatureHp() const //zwraca hp
@@ -33,7 +33,7 @@ int Enemy::creatureAttack()
 {
 	std::mt19937 randomThings;
 	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(creatureStrength / 2, creatureStrength);
+	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(creatureStrength -3, creatureStrength);
 	creatureTurnAttackValue = randomAttack(randomThings);
 	return 	creatureTurnAttackValue;
 }

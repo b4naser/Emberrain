@@ -18,8 +18,8 @@ Minotaur::Minotaur(int aPlayer, int dPlayer, int hpPlayer)
 	creatureStrength = randomStrength(randomThings);
 	creatureDefence = randomDefence(randomThings);
 
-	if(aPlayer>17 || dPlayer>5)
-		creatureStunRate = 10;  //szansa na stuna
+	if(aPlayer>25)
+		creatureStunRate = 12;  //szansa na stuna
 	else
 		creatureStunRate = 5;  //szansa na stuna
 }

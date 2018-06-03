@@ -1,6 +1,6 @@
 #include "Boots.h"
 
-Boots::Boots() : DefenseValue(2), AddDodgeRateValue(1)
+Boots::Boots() : DefenseValue(1), AddDodgeRateValue(1)
 {
 }
 

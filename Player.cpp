@@ -7,6 +7,7 @@ Player::Player()
 	playerBaseDefence = 2;
 	playerBaseEnergy = 100;
 	playerBaseDodgeRate = 5;
+	refreshPlayer();
 }
 void Player::refreshPlayer()
 {
@@ -41,7 +42,7 @@ int Player::playerCrushingAttack()
 {
 	std::mt19937 randomThings;
 	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength,playerStrength+5);
+	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength,playerStrength+8);
 	playerTurnAttackValue = randomAttack(randomThings);
 	return playerTurnAttackValue;
 }

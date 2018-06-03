@@ -1,6 +1,6 @@
 #include "Shield.h"
 
-Shield::Shield() :DefenseValue(5),AddEnergyValue(5)
+Shield::Shield() :DefenseValue(2),AddEnergyValue(5)
 {
 }
 int Shield::getDefenseValue() const

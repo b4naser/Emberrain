@@ -17,7 +17,7 @@ Vampire::Vampire(int aPlayer, int dPlayer, int hpPlayer)
 	creatureDefence = randomDefence(randomThings);
 	creatureLifeSteal = 35;  // wampiryzm
 
-	if (aPlayer>18)
+	if (aPlayer>25)
 		creatureLifeSteal = 45;  
 	else
 		creatureLifeSteal = 35;  

@@ -2,16 +2,20 @@
 #include <cstdlib>
 #include <random>
 #include <string>
+#include "Equipment.h"
 class Player
 {
 private :
-	int playerHp,playerStrength,playerDefence,playerEnergy,playerDodgdeRate;
+	int playerHp,playerStrength,playerDefence,
+		playerEnergy,playerDodgeRate;
+	int playerBaseHp, playerBaseStrength, playerBaseDefence,
+		playerBaseEnergy, playerBaseDodgeRate;
 	std::string playerName;
 
 	int playerTurnAttackValue;
 public:
 	Player();
-
+	Equipment* eq;
 	void playerDecreaseHP(int damageTaken);
 	void playerIncreaseEnergy();
 	void playerDecreaseEnergy(int);
@@ -29,5 +33,8 @@ public:
 	int getPlayerDodgeRate() const;
 	int getPlayerStrength() const;
 	void setPlayerName(std::string name);
+
+	void refreshPlayer();
+
 	~Player();
 };

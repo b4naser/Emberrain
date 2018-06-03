@@ -3,6 +3,7 @@
 #include <vector>
 #include "Map.h"
 #include "Fight.h"
+#include <random>
 
 using namespace std;
 
@@ -25,6 +26,8 @@ Map::Map(Player *p)
 
 	// Wylosowanie pozycji portalu, gracza i przeciwnikow
 	this->generatePos();
+
+	this->level = 1;
 }
 
 void Map::show()
@@ -49,6 +52,11 @@ void Map::show()
 
 	cursorPos.X = 50;
 	cursorPos.Y = 5;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << "Level: " << this->level;
+
+	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerName();
@@ -193,12 +201,12 @@ void Map::show()
 					if (this->enemies[k][1] == y && this->enemies[k][0] == x)
 					{
 						cursorPos.X = 50;
-						cursorPos.Y = 15;
+						cursorPos.Y = 17;
 						SetConsoleCursorPosition(hConsole, cursorPos);
 						SetConsoleTextAttribute(hConsole, 12);
 						cout << "e";
 						SetConsoleTextAttribute(hConsole, 15);
-						cout << ": fight ";
+						cout << ": Fight ";
 						switch (enemies[k][2])
 						{
 						case 1:
@@ -223,7 +231,7 @@ void Map::show()
 		if (playerPos.x == portalPos.x && playerPos.y == portalPos.y)
 		{
 			cursorPos.X = 50;
-			cursorPos.Y = 16;
+			cursorPos.Y = 18;
 			SetConsoleCursorPosition(hConsole, cursorPos);
 			SetConsoleTextAttribute(hConsole, 12);
 			if (this->enemies.size() != 0)
@@ -268,14 +276,15 @@ void Map::command(char cmd)
 		rm.generateMap();
 		this->map = rm.getMap();
 		this->generatePos();
+		this->level++;
 	}
 	else if (cmd == 'e' && target != -1)
 	{
 		Fight f(*this->player, this->enemies[this->target][2]);
-		//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 		if (f.fightStart())
 		{
 			this->enemies.erase(this->enemies.begin() + target);
+			this->player->eq->addCrystals(rand() % 20 + 5);
 		}
 		else
 			this->defeated = true;

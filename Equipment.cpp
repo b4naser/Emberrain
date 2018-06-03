@@ -106,16 +106,19 @@ void Equipment::show()
 	SetConsoleTextAttribute(hConsole, 15);
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "z: upgrade sword";
+	cout << "z: Upgrade sword";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "x: upgrade armor";
+	cout << "x: Upgrade armor";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "c: upgrade shield";
+	cout << "c: Upgrade shield";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "v: upgrade boots";
+	cout << "v: Upgrade boots";
+	cursorPos.Y += 1;
+	SetConsoleCursorPosition(hConsole, cursorPos);
+	cout << "m: View map";
 }
 
 void Equipment::command(char cmd)
@@ -124,19 +127,31 @@ void Equipment::command(char cmd)
 	{
 	case 'z':
 		if ((this->getCrystals() - this->weapon->getLevel() * 20) >= 0)
+		{
+			this->subCrystals(this->weapon->getLevel() * 20);
 			this->weapon->upgrade();
+		}
 		break;
 	case 'x':
 		if ((this->getCrystals() - this->armor->getLevel() * 20) >= 0)
+		{
+			this->subCrystals(this->armor->getLevel() * 20);
 			this->armor->upgrade();
+		}
 		break;
 	case 'c':
 		if ((this->getCrystals() - this->shield->getLevel() * 20) >= 0)
+		{
+			this->subCrystals(this->shield->getLevel() * 20);
 			this->shield->upgrade();
+		}
 		break;
 	case 'v':
 		if ((this->getCrystals() - this->boots->getLevel() * 20) >= 0)
+		{
+			this->subCrystals(this->boots->getLevel() * 20);
 			this->boots->upgrade();
+		}
 		break;
 	}
 	system("cls");

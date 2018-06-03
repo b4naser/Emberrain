@@ -47,7 +47,7 @@ Fight::Fight(Player& play,int FLAGA)
 			<< endl;
 	}
 }
-void Fight::fightStart()
+bool Fight::fightStart()
 {
 
 		while (true) {
@@ -58,7 +58,7 @@ void Fight::fightStart()
 			if (isFightEnded()) 
 			{  //warunek zakonczenia
 				setHpBar();  
-				break;
+				return true;
 			}             
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_ENEMY);
 			fightCreatureAttack();
@@ -66,7 +66,7 @@ void Fight::fightStart()
 			if (isFightEnded())
 			{   //warunek zakonczenia
 				setHpBar();  
-				break;
+				return false;
 			}		
 			setHpBar();
 			actionCOORD_Y++;

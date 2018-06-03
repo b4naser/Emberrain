@@ -8,6 +8,7 @@
 #include "Fight.h"
 #include "Player.h"
 #include "GameOver.h"
+#include <random>
 
 using namespace std;
 
@@ -52,9 +53,10 @@ void Game::run()
 	COORD cursorPos;
 
 	Player p;
+
 	// Inicjalizuje wszystkie Stage'e
 	Map* map = new Map(&p);
-	Equipment* equipment = new Equipment();
+	Equipment* equipment = p.eq;
 	GameOver* gameOver = new GameOver();
 
 	// Ustawia domyslny stage
@@ -103,6 +105,8 @@ void Game::run()
 
 	while(this->running)
 	{
+		p.refreshPlayer();
+
 		// Wyswietla UI
 		stage->show();
 		

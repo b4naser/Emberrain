@@ -57,9 +57,6 @@
     <ClCompile Include="Boots.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Crystals.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Equipment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Boots.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Crystals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Equipment.h">

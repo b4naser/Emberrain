@@ -22,6 +22,7 @@ private:
 	int target;
 	void generatePos();
 	bool defeated = false;
+	int level;
 public:
 	Map(Player *p);
 	virtual void show();

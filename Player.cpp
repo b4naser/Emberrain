@@ -1,11 +1,20 @@
 #include "Player.h"
 Player::Player()
 {
-	playerHp = 140;
-	playerStrength = 14;
-	playerDefence = 2;
-	playerEnergy = 100;
-	playerDodgdeRate = 5;
+	this->eq = new Equipment();
+	playerBaseHp = 140;
+	playerBaseStrength = 14;
+	playerBaseDefence = 2;
+	playerBaseEnergy = 100;
+	playerBaseDodgeRate = 5;
+}
+void Player::refreshPlayer()
+{
+	playerDefence = playerBaseDefence + eq->getDefense();
+	playerDodgeRate = playerBaseDodgeRate + eq->getDodgeRate();
+	playerStrength = playerBaseStrength + eq->getAttack();
+	playerHp = playerBaseHp + eq->getHp();
+	playerEnergy = playerBaseEnergy + eq->getEnergy();
 }
 
 int Player::getPlayerHP()
@@ -57,7 +66,7 @@ bool Player::playerDodging()
 	randomThings.seed(std::random_device()());
 	std::uniform_int_distribution<std::mt19937::result_type> dodge(0, 100);
 	int temp = dodge(randomThings);
-	if (temp <= playerDodgdeRate)
+	if (temp <= playerDodgeRate)
 		return true;
 	return false;
 }
@@ -93,7 +102,7 @@ int Player::getPlayerTurnAttackValue() const
 
 int Player::getPlayerDodgeRate() const
 {
-	return playerDodgdeRate;
+	return playerDodgeRate;
 }
 
 int Player::getPlayerStrength() const

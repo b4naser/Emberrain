@@ -412,7 +412,7 @@ void Fight::fightPlayerAttack()
 			if (round % 5 == 0)
 			{
 				clearCombat();
-				actionCOORD_Y = 5
+				actionCOORD_Y = 5;
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
 			clearChooseField();

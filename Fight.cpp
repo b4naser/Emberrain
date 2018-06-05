@@ -1,6 +1,7 @@
 #include "Fight.h"
 #include <iostream>
 #include <conio.h>
+
 using namespace std;
 
 bool Fight::isFightEnded()
@@ -20,6 +21,7 @@ void Fight::roundLoop()
 
 Fight::Fight(Player& play, int FLAGA)
 {
+	system("cls");
 	if (FLAGA == 1) {
 		player = play;
 		creature = Skeleton(play.getPlayerStrength(), play.getPlayerDefence(), play.getPlayerHP());
@@ -42,10 +44,6 @@ Fight::Fight(Player& play, int FLAGA)
 		roundLoop();
 	}
 
-	else {
-		cout << "Podano klase, ktorej nie ma w bazie "
-			<< endl;
-	}
 }
 bool Fight::fightStart()
 {
@@ -267,7 +265,6 @@ void Fight::showUIPlayerEnemy()
 
 	fightPosition = { 25,  2 };
 	SetConsoleCursorPosition(hConsole, fightPosition);
-	//cout << player.getPlayerName() << "      vs       " << creature.getCreatureName();
 
 	fightPosition = { tempCreatureX,  tempCreatureY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
@@ -284,8 +281,6 @@ void Fight::showUIPlayerEnemy()
 	fightPosition = { tempCreatureX,  tempCreatureY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	printf("Zycie: %5d", creature.getCreatureHp());
-	//IMPORTANT_COORD_HPBAR_PLAYER_X = tempCreatureX;
-	//IMPORTANT_COORD_HPBAR_PLAYER_Y = tempCreatureY;
 	tempCreatureY += 1;
 
 
@@ -417,7 +412,7 @@ void Fight::fightPlayerAttack()
 			if (round % 5 == 0)
 			{
 				clearCombat();
-				actionCOORD_Y = 5;//WARNING TU TEZ ZMIEN!
+				actionCOORD_Y = 5
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
 			clearChooseField();
@@ -452,7 +447,7 @@ void Fight::fightPlayerAttack()
 			if (round % 5 == 0)
 			{
 				clearCombat();
-				actionCOORD_Y = 5;//WARNING TU TEZ ZMIEN!
+				actionCOORD_Y = 5;
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
 			clearChooseField();

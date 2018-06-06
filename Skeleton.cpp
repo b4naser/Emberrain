@@ -13,6 +13,7 @@ Skeleton::Skeleton(int aPlayer, int dPlayer, int hpPlayer)
 	creatureStunRate = 0;
 	creatureLifeSteal = 0;
 	creatureDefence = randomDefence(randomThings);
+	creatureDodgeRate = 15;
 	if (aPlayer >= 20)
 		creatureDodgeRate = 25; //szansa na dodge 
 	 else if (aPlayer >= 25)

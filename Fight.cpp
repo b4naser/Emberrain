@@ -104,7 +104,7 @@ void Fight::normalAttack()
 	fightPosition = { actionCOORD_X, actionCOORD_Y };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	actionCOORD_Y++;
-	player.playerDecreaseHP(creature.creatureAttack());
+	player.playerDecreaseHP(creature.creatureAttack() - player.getPlayerDefence());
 	cout << creature.getCreatureName();
 	cout << " atakuje:";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HIT);
@@ -412,7 +412,7 @@ void Fight::fightPlayerAttack()
 			if (round % 5 == 0)
 			{
 				clearCombat();
-				actionCOORD_Y = 5
+				actionCOORD_Y = 5;
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
 			clearChooseField();
@@ -425,7 +425,7 @@ void Fight::fightPlayerAttack()
 			}
 			else
 			{
-				creature.creatureHpDecrease(player.playerAttack());
+				creature.creatureHpDecrease(player.playerAttack()-creature.getCreatureDefence());
 				fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
 				SetConsoleCursorPosition(hConsole, fightPosition);
 				actionCOORD_Y++;
@@ -468,7 +468,7 @@ void Fight::fightPlayerAttack()
 			{
 				player.playerDecreaseEnergy(20);
 				fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
-				creature.creatureHpDecrease(player.playerCrushingAttack());
+				creature.creatureHpDecrease(player.playerAttack() - creature.getCreatureDefence());
 				SetConsoleCursorPosition(hConsole, fightPosition);
 				actionCOORD_Y++;
 				cout << player.getPlayerName();
@@ -510,7 +510,7 @@ void Fight::fightCreatureAttack() {
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		actionCOORD_Y++;
 		actionCOORD_Y++;
-		player.playerDecreaseHP(creature.creatureAttack());
+		player.playerDecreaseHP(creature.creatureAttack()-player.getPlayerDefence());
 		cout << creature.getCreatureName();
 
 		cout << " atakuje:";
@@ -532,14 +532,14 @@ void Fight::fightCreatureAttack() {
 		roundLoop();
 		normalAttack();
 	}
-	else if ((creature.getCreatureLifeStealRate() > 0) && creature.creatureReturningLife())
+	else if ((creature.getCreatureLifeStealRate() > 0) && creature.creatureTryToStealLife())
 	{
 		if (creature.getCreatureHp() < 120)
 		{
 			fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
 			SetConsoleCursorPosition(hConsole, fightPosition);
 			actionCOORD_Y++;
-			player.playerDecreaseHP(creature.creatureAttack());
+			player.playerDecreaseHP(creature.creatureAttack() - player.getPlayerDefence());
 			cout << creature.getCreatureName();
 			cout << " atakuje:";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HIT);
@@ -552,7 +552,7 @@ void Fight::fightCreatureAttack() {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HP);
 			cout << player.getPlayerHP();
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
-			creature.creatureTryLifeSteal(player.getPlayerDefence());
+			creature.creatureStealLife(player.getPlayerDefence());
 			fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
 			SetConsoleCursorPosition(hConsole, fightPosition);
 			actionCOORD_Y++;

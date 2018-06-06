@@ -13,8 +13,8 @@ public:
 	virtual  void creatureHpDecrease(int);
 	virtual  bool creatureDodge()const;
 	virtual  int creatureAttack();
-	virtual bool creatureReturningLife();
-	virtual void creatureTryLifeSteal(int);
+	virtual bool creatureTryToStealLife();
+	virtual void creatureStealLife(int);
 	virtual bool creatureTryStun();
 
 	virtual int getCreatureStunRate()const;

@@ -26,14 +26,14 @@ int Player::getPlayerHP()
 void Player::playerDecreaseHP(int damageTaken)
 {
 	if (damageTaken > playerDefence)
-		playerHp = playerHp - damageTaken + playerDefence;
+		playerHp = playerHp - damageTaken;
 }
 
 int Player::playerAttack()
 {
 	std::mt19937 randomThings;
 	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength / 2, playerStrength);
+	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength-6, playerStrength+3);
 	playerTurnAttackValue = randomAttack(randomThings);
 	return playerTurnAttackValue;
 }
@@ -42,7 +42,7 @@ int Player::playerCrushingAttack()
 {
 	std::mt19937 randomThings;
 	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength,playerStrength+8);
+	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength+3,playerStrength+11);
 	playerTurnAttackValue = randomAttack(randomThings);
 	return playerTurnAttackValue;
 }

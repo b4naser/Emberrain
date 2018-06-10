@@ -8,7 +8,7 @@ class Enemy
 protected:
 	int creatureHp,creatureDefence,creatureStrength;
 	std::string creatureName;
-	int creatureTurnAttackValue,creatureLifeSteal,creatureLifeStealRate,creatureStunRate, creatureDodgeRate ;   //potrzebna zmiena do zwracania losowanego ataku 
+	int creatureTurnAttackValue,creatureLifeSteal,creatureLifeStealRate,creatureStunRate, creatureDodgeRate ; 
 public:
 	virtual  void creatureHpDecrease(int);
 	virtual  bool creatureDodge()const;

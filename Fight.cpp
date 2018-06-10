@@ -19,24 +19,24 @@ void Fight::roundLoop()
 }
 
 
-Fight::Fight(Player& play, int FLAGA)
+Fight::Fight(Player& play, int id)
 {
 	system("cls");
-	if (FLAGA == 1) {
+	if (id == 1) {
 		player = play;
 		creature = Skeleton(play.getPlayerStrength(), play.getPlayerDefence(), play.getPlayerHP());
 		leadingUI();
 		showUIPlayerEnemy();
 		roundLoop();
 	}
-	else if (FLAGA == 2) {
+	else if (id == 2) {
 		player = play;
 		creature = Minotaur(play.getPlayerStrength(), play.getPlayerDefence(), play.getPlayerHP());
 		leadingUI();
 		showUIPlayerEnemy();
 		roundLoop();
 	}
-	else if (FLAGA == 3) {
+	else if (id == 3) {
 		player = play;
 		creature = Vampire(play.getPlayerStrength(), play.getPlayerDefence(), play.getPlayerHP());
 		leadingUI();
@@ -49,7 +49,7 @@ bool Fight::fightStart()
 {
 
 	while (true) {
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 		fightPlayerAttack();
 		setHpBar();
 		if (isFightEnded())
@@ -58,7 +58,7 @@ bool Fight::fightStart()
 			getchar();
 			return true;
 		}
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 		fightCreatureAttack();
 		setHpBar();
 		if (isFightEnded())
@@ -85,13 +85,12 @@ void Fight::clearCombat()
 		std::cout << "                                    ";
 	}
 }
-void Fight::clearChooseField()
+void Fight::clearErrorField()
 {
 	//czysci tekst ktory pokazuje brak energii
 	fightPosition = { 30, 28 };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	cout << "                                            ";
-
 }
 void Fight::infoWrongAction()
 {
@@ -112,11 +111,11 @@ void Fight::normalAttack()
 		cout << creature.getCreatureTurnAttackValue() - player.getPlayerDefence();
 	else
 		cout << "0";
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 	cout << " zostawiajac:";
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HP);
 	cout << player.getPlayerHP();
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 }
 
 void Fight::leadingUI()
@@ -256,7 +255,7 @@ void Fight::showUIPlayerEnemy()
 	short tempPlayerY = 2;
 	short tempCreatureY = 2;
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 
 
 	///////////////////////////////////
@@ -277,7 +276,7 @@ void Fight::showUIPlayerEnemy()
 	cout << "Statystyki:";
 	tempCreatureY += 1;
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 	fightPosition = { tempCreatureX,  tempCreatureY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	printf("Zycie: %5d", creature.getCreatureHp());
@@ -300,7 +299,7 @@ void Fight::showUIPlayerEnemy()
 	printf("Umiejetnosci:");
 	tempCreatureY += 1;
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 	fightPosition = { tempCreatureX,  tempCreatureY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	cout << "Unik: " << creature.getCreatureDodgeRate() << "%";
@@ -313,13 +312,13 @@ void Fight::showUIPlayerEnemy()
 
 	fightPosition = { tempCreatureX,  tempCreatureY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
-	cout << "Life Steal: " << creature.getCreatureLifeStealRate() << "%";
+	cout << "Leczenie: " << creature.getCreatureLifeStealRate() << "%";
 	tempCreatureY += 1;
 
 	////////////////////////////
 	// player
 	///////////////////////////
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 	fightPosition = { tempPlayerX,  tempPlayerY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	cout << "Nazwa: " << player.getPlayerName();
@@ -331,7 +330,7 @@ void Fight::showUIPlayerEnemy()
 	printf("Statystyki:");
 	tempPlayerY = tempPlayerY + 1;
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 	fightPosition = { tempPlayerX,  tempPlayerY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	printf("Zycie:  %4d", player.getPlayerHP());
@@ -358,7 +357,7 @@ void Fight::showUIPlayerEnemy()
 	printf("Umiejetnosci: ");
 	tempPlayerY = tempPlayerY + 1;
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 	fightPosition = { tempPlayerX,  tempPlayerY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	printf("Regeneracja: +5E");
@@ -376,7 +375,7 @@ void Fight::showUIPlayerEnemy()
 	cout << "Akcje:  ";
 	tempPlayerY = tempPlayerY + 1;
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 	fightPosition = { tempPlayerX,  tempPlayerY };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	cout << "1)Atak(K:0)";
@@ -402,7 +401,7 @@ void Fight::fightPlayerAttack()
 	char option;
 	while (true)
 	{
-		fightPosition = { 14, 28 };  //KOD:101
+		fightPosition = { 14, 28 }; 
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		option = getch();
 
@@ -415,10 +414,10 @@ void Fight::fightPlayerAttack()
 				actionCOORD_Y = 5;
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
-			clearChooseField();
+			clearErrorField();
 			if (creature.creatureDodge())
 			{
-				fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
+				fightPosition = { actionCOORD_X, actionCOORD_Y };		
 				SetConsoleCursorPosition(hConsole, fightPosition);
 				actionCOORD_Y++;
 				cout << creature.getCreatureName() << " unika ataku!";
@@ -426,7 +425,7 @@ void Fight::fightPlayerAttack()
 			else
 			{
 				creature.creatureHpDecrease(player.playerAttack()-creature.getCreatureDefence());
-				fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
+				fightPosition = { actionCOORD_X, actionCOORD_Y };		
 				SetConsoleCursorPosition(hConsole, fightPosition);
 				actionCOORD_Y++;
 				cout << player.getPlayerName();
@@ -436,11 +435,11 @@ void Fight::fightPlayerAttack()
 					cout << player.getPlayerTurnAttackValue() - creature.getCreatureDefence();
 				else
 					cout << "0";
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 				cout<<" zostawiajac:";
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HP);
 				cout << creature.getCreatureHp();
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 			}
 			break;
 		case '2':
@@ -450,7 +449,7 @@ void Fight::fightPlayerAttack()
 				actionCOORD_Y = 5;
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
-			clearChooseField();
+			clearErrorField();
 			if (player.getPlayerEnergy()<20)
 			{
 				infoWrongAction();
@@ -459,7 +458,7 @@ void Fight::fightPlayerAttack()
 			else if (creature.creatureDodge())
 			{
 				player.playerDecreaseEnergy(20);
-				fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
+				fightPosition = { actionCOORD_X, actionCOORD_Y };		
 				SetConsoleCursorPosition(hConsole, fightPosition);
 				actionCOORD_Y++;
 				cout << creature.getCreatureName() << " unika ataku!";
@@ -467,8 +466,8 @@ void Fight::fightPlayerAttack()
 			else
 			{
 				player.playerDecreaseEnergy(20);
-				fightPosition = { actionCOORD_X, actionCOORD_Y };		//usawia cursor AKCJI
-				creature.creatureHpDecrease(player.playerAttack() - creature.getCreatureDefence());
+				fightPosition = { actionCOORD_X, actionCOORD_Y };		
+				creature.creatureHpDecrease(player.playerCrushingAttack() - creature.getCreatureDefence());
 				SetConsoleCursorPosition(hConsole, fightPosition);
 				actionCOORD_Y++;
 				cout << player.getPlayerName();
@@ -479,11 +478,11 @@ void Fight::fightPlayerAttack()
 					cout << player.getPlayerTurnAttackValue() - creature.getCreatureDefence();
 				else
 					cout << "0";
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 				cout << " zostawiajac:";
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HP);
 				cout << creature.getCreatureHp();
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 			}
 			break;
 		default:
@@ -497,16 +496,16 @@ void Fight::fightPlayerAttack()
 }
 void Fight::fightCreatureAttack() {
 
-	if (player.playerDodging())
+	if (player.playerTryToDodge())
 	{
-		fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
+		fightPosition = { actionCOORD_X, actionCOORD_Y };					
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		actionCOORD_Y++;
 		cout << player.getPlayerName() << " unika ataku!";
 	}
 	else if ((creature.getCreatureStunRate() > 0) && creature.creatureTryStun())
 	{
-		fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
+		fightPosition = { actionCOORD_X, actionCOORD_Y };					
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		actionCOORD_Y++;
 		actionCOORD_Y++;
@@ -520,12 +519,12 @@ void Fight::fightCreatureAttack() {
 			cout << creature.getCreatureTurnAttackValue() - player.getPlayerDefence();
 		else
 			cout << "0";
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 		cout << " zostawiajac:";
 		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HP);
 		 cout << player.getPlayerHP();
-		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
-		fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
+		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
+		fightPosition = { actionCOORD_X, actionCOORD_Y };					
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		actionCOORD_Y++;
 		cout << "Ogluszenie!";
@@ -536,7 +535,7 @@ void Fight::fightCreatureAttack() {
 	{
 		if (creature.getCreatureHp() < 120)
 		{
-			fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
+			fightPosition = { actionCOORD_X, actionCOORD_Y };					
 			SetConsoleCursorPosition(hConsole, fightPosition);
 			actionCOORD_Y++;
 			player.playerDecreaseHP(creature.creatureAttack() - player.getPlayerDefence());
@@ -547,20 +546,20 @@ void Fight::fightCreatureAttack() {
 				cout << creature.getCreatureTurnAttackValue() - player.getPlayerDefence();
 			else
 				cout << "0";
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 			cout << " zostawiajac:";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HP);
 			cout << player.getPlayerHP();
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 			creature.creatureStealLife(player.getPlayerDefence());
-			fightPosition = { actionCOORD_X, actionCOORD_Y };					//usawia cursor
+			fightPosition = { actionCOORD_X, actionCOORD_Y };					
 			SetConsoleCursorPosition(hConsole, fightPosition);
 			actionCOORD_Y++;
 			if (creature.getCreatureTurnAttackValue() - player.getPlayerDefence() > 0) {
 				cout << "Wampir leczy sie za ";
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_HIT);
 				cout << creature.getCreatureTurnAttackValue() - player.getPlayerDefence();
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_AKCJI);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 			}
 		}
 		else normalAttack();

@@ -6,7 +6,7 @@ void Enemy::creatureHpDecrease(int damageDone)
 		creatureHp = creatureHp - damageDone ;
 }
 
-int Enemy::getCreatureHp() const //zwraca hp
+int Enemy::getCreatureHp() const 
 {
 	return creatureHp;
 }
@@ -18,22 +18,21 @@ int Enemy::getCreatureDodgeRate() const
 {
 	return creatureDodgeRate;
 }
- bool Enemy::creatureDodge() const //zwraca ilosc uniku procentowo
-{
-	 std::mt19937 randomThings;
-	 randomThings.seed(std::random_device()());
-	 std::uniform_int_distribution<std::mt19937::result_type> dodge(0,100);
+ bool Enemy::creatureDodge() const
+ {
+	 std::random_device dev;
+	 std::mt19937 randomThings(dev());
+	 std::uniform_int_distribution<int> dodge(0,100);
 	 int temp = dodge(randomThings);
 		 if (temp <= creatureDodgeRate)
 			 return true;
 	 return false;
 }
-
 int Enemy::creatureAttack()
 {
-	std::mt19937 randomThings;
-	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(creatureStrength-6, creatureStrength+2);
+	std::random_device dev;
+	std::mt19937 randomThings(dev());
+	std::uniform_int_distribution<int> randomAttack(creatureStrength-6, creatureStrength+2);
 	creatureTurnAttackValue = randomAttack(randomThings);
 	return 	creatureTurnAttackValue;
 }
@@ -52,11 +51,11 @@ int Enemy::getCreatureDefence() const
 {
 	return creatureDefence;
 }
-bool Enemy::creatureTryToStealLife() //funckja przywracajaca zdrowie wampirowi (równość ataku vampira)
+bool Enemy::creatureTryToStealLife() 
 {
-	std::mt19937 randomThings;
-	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> life(0, 100);
+	std::random_device dev;
+	std::mt19937 randomThings(dev());
+	std::uniform_int_distribution<int> life(0, 100);
 	int temp = life(randomThings);
 	if (temp <= creatureLifeSteal)
 		return true;
@@ -71,11 +70,11 @@ void Enemy::creatureStealLife(int def)
 	}
 }
 
-bool Enemy::creatureTryStun()  // zwraca prawde jesli jest mana  // zwraca falsz jesli nie ma many lub nie wylosowalo sie
+bool Enemy::creatureTryStun()  
 {
-	std::mt19937 randomThings;
-	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> stun(0, 100);
+	std::random_device dev;
+	std::mt19937 randomThings(dev());
+	std::uniform_int_distribution<int>stun(0, 100);
 	int temp = stun(randomThings);
 	if (temp <= creatureLifeSteal)
 		return true;

@@ -13,8 +13,8 @@ class Fight
 private:
 	CONST short actionCOORD_X = 24;
 	CONST short roundCOORD_X = 37;
-	CONST int STALA_INT_KOLORU_TEXTU = 119;//34;
-	CONST int STALA_KOLORU_TEXTU_AKCJI = 112;
+	CONST int STALA_INT_KOLORU_TEXTU = 119;;
+	CONST int STALA_KOLORU_TEXTU_WALKI = 112;
 	CONST int STALA_KOLORU_STATYSTYK = 121;
 	CONST int STALA_KOLORU_HP = 113;
 	CONST int STALA_KOLORU_UMIEJETNOSCI = 117;
@@ -31,16 +31,16 @@ private:
 	Enemy creature;
 
 	bool isFightEnded();  //warunek konczoncy walke
-	void roundLoop();  //inkrementuje runda++
+	void roundLoop();  //inkrementuje runda
 	void leadingUI();		//wyswietlna kolumny
 	void showUIPlayerEnemy();   //wyswietla statystyki etc.
-	void fightPlayerAttack();		 //na potrzeby klasy funckja ataku enemy
-	void fightCreatureAttack();   //na potrzeby klasy funckja ataku playera
+	void fightPlayerAttack();		 
+	void fightCreatureAttack();  
 	void setEnergyBar();			 //ustawia wartosc energy baru
 	void clearCombat();					// czysci combat co 5rund
 	void setHpBar();
-	void clearChooseField();				//czysci pole wyboru akcji
-	void infoWrongAction();   //bl1ad 1-brak energi 2-brak wlasciwej akcji
+	void clearErrorField();				//czysci pole wyboru akcji
+	void infoWrongAction();  
 	void normalAttack();
 public:
 	Fight::Fight(Player&, int);  //Flaga int 1 =szkielet,2=minotaur 3=vampire

@@ -23,7 +23,7 @@ public:
 	int playerAttack();
 	int playerCrushingAttack();
 
-	bool playerDodging(); // gracz unika
+	bool playerTryToDodge(); 
 
 	int getPlayerDefence();
 	std::string getPlayerName();

@@ -31,18 +31,18 @@ void Player::playerDecreaseHP(int damageTaken)
 
 int Player::playerAttack()
 {
-	std::mt19937 randomThings;
-	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength-6, playerStrength+3);
+	std::random_device dev;
+	std::mt19937 randomThings(dev());
+	std::uniform_int_distribution<int> randomAttack(playerStrength-6, playerStrength+3);
 	playerTurnAttackValue = randomAttack(randomThings);
 	return playerTurnAttackValue;
 }
 
 int Player::playerCrushingAttack()
 {
-	std::mt19937 randomThings;
-	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> randomAttack(playerStrength+3,playerStrength+11);
+	std::random_device dev;
+	std::mt19937 randomThings(dev());
+	std::uniform_int_distribution<int> randomAttack(playerStrength+8,playerStrength+12);
 	playerTurnAttackValue = randomAttack(randomThings);
 	return playerTurnAttackValue;
 }
@@ -61,11 +61,11 @@ void Player::playerIncreaseEnergy()
 	}
 	
 }
-bool Player::playerDodging()
+bool Player::playerTryToDodge()
 {
-	std::mt19937 randomThings;
-	randomThings.seed(std::random_device()());
-	std::uniform_int_distribution<std::mt19937::result_type> dodge(0, 100);
+	std::random_device dev;
+	std::mt19937 randomThings(dev());
+	std::uniform_int_distribution<int> dodge(0, 100);
 	int temp = dodge(randomThings);
 	if (temp <= playerDodgeRate)
 		return true;

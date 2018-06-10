@@ -19,24 +19,24 @@ void Fight::roundLoop()
 }
 
 
-Fight::Fight(Player& play, int FLAGA)
+Fight::Fight(Player& play, int id)
 {
 	system("cls");
-	if (FLAGA == 1) {
+	if (id == 1) {
 		player = play;
 		creature = Skeleton(play.getPlayerStrength(), play.getPlayerDefence(), play.getPlayerHP());
 		leadingUI();
 		showUIPlayerEnemy();
 		roundLoop();
 	}
-	else if (FLAGA == 2) {
+	else if (id == 2) {
 		player = play;
 		creature = Minotaur(play.getPlayerStrength(), play.getPlayerDefence(), play.getPlayerHP());
 		leadingUI();
 		showUIPlayerEnemy();
 		roundLoop();
 	}
-	else if (FLAGA == 3) {
+	else if (id == 3) {
 		player = play;
 		creature = Vampire(play.getPlayerStrength(), play.getPlayerDefence(), play.getPlayerHP());
 		leadingUI();

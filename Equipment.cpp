@@ -56,69 +56,69 @@ void Equipment::show()
 
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 12);
-	cout << "Crystals: " << this->getCrystals();
+	cout << "Kryszta³y: " << this->getCrystals();
 
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 3);
-	cout << "Weapon__________ Upgrade cost: " << this->weapon->getLevel() * 20;
+	cout << "Miecz____________ Koszt ulepszenia: " << this->weapon->getLevel() * 20;
 	SetConsoleTextAttribute(hConsole, 7);
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "Attack:     " <<  weapon->getAttackValue();
+	cout << "Atak:     " <<  weapon->getAttackValue();
 	
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 3);
-	cout << "Armor___________ Upgrade cost: " << this->armor->getLevel() * 20;
+	cout << "Zbroja___________ Koszt ulepszenia: " << this->armor->getLevel() * 20;
 	SetConsoleTextAttribute(hConsole, 7);
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos); 
-	cout << "Defense:    " << armor->getDefenseValue();
+	cout << "Obrona:   " << armor->getDefenseValue();
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "Health:     " << armor->getAddHpValue();
+	cout << "Zdrowie:  " << armor->getAddHpValue();
 	
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 3);
-	cout << "Shield__________ Upgrade cost: " << this->shield->getLevel() * 20;
+	cout << "Tarcza___________ Koszt ulepszenia: " << this->shield->getLevel() * 20;
 	SetConsoleTextAttribute(hConsole, 7);
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "Defense:    " << shield->getDefenseValue();
+	cout << "Obrona:   " << shield->getDefenseValue();
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "Energy:     " << shield->getAddEnergyValue();
+	cout << "Energia:  " << shield->getAddEnergyValue();
 	
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 3);
-	cout << "Boots___________ Upgrade cost: " << this->boots->getLevel() * 20;
+	cout << "Buty_____________ Koszt ulepszenia: " << this->boots->getLevel() * 20;
 	SetConsoleTextAttribute(hConsole, 7);
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "Defense:    " << boots->getDefenseValue();
+	cout << "Obrona:   " << boots->getDefenseValue();
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "Dodge rate: " << boots->getAddDodgeRateValue();
+	cout << "Unik:     " << boots->getAddDodgeRateValue();
 
 	SetConsoleTextAttribute(hConsole, 15);
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "z: Upgrade sword";
+	cout << "z: Ulepsz miecz";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "x: Upgrade armor";
+	cout << "x: Ulepsz zbrojê";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "c: Upgrade shield";
+	cout << "c: Ulepsz tarczê";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "v: Upgrade boots";
+	cout << "v: Ulepsz buty";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "m: View map";
+	cout << "m: Mapa";
 }
 
 void Equipment::command(char cmd)

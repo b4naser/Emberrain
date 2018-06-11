@@ -54,7 +54,7 @@ void Map::show()
 	cursorPos.Y = 5;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 10);
-	cout << "Level: " << this->level;
+	cout << "Poziom lochu: " << this->level;
 
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
@@ -64,35 +64,35 @@ void Map::show()
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 7);
-	cout << "Max Health:   ";
+	cout << "Maks. Zdrowie:   ";
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerHP();
 
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 7);
-	cout << "Max Energy:   ";
+	cout << "Maks. Energia:   ";
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerEnergy();
 
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 7);
-	cout << "Max Strength: ";
+	cout << "Maks. Si³a: ";
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerStrength();
 
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 7);
-	cout << "Max Defense:  ";
+	cout << "Maks. Obrona:  ";
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerDefence();
 
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 7);
-	cout << "Dodge Rate:   ";
+	cout << "Unik:   ";
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerHP();
 
@@ -101,14 +101,14 @@ void Map::show()
 	SetConsoleTextAttribute(hConsole, 12);
 	cout << "i";
 	SetConsoleTextAttribute(hConsole, 15);
-	cout << ": View equipment";
+	cout << ": Ekwipunek";
 
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 12);
 	cout << "q";
 	SetConsoleTextAttribute(hConsole, 15);
-	cout << ": Quit";
+	cout << ": Wyjscie";
 
 	for (int x = 2; x < this->MAP_WIDTH+2; x++)
 	{
@@ -206,17 +206,17 @@ void Map::show()
 						SetConsoleTextAttribute(hConsole, 12);
 						cout << "e";
 						SetConsoleTextAttribute(hConsole, 15);
-						cout << ": Fight ";
+						cout << ": Walcz z";
 						switch (enemies[k][2])
 						{
 						case 1:
-							cout << "Skeleton";
+							cout << "e Szkielet";
 							break;
 						case 2:
-							cout << "Minotaur";
+							cout << " Minotaurem";
 							break;
 						case 3:
-							cout << "Vampire";
+							cout << "Wampirem";
 							break;
 						}
 						target = k;
@@ -236,13 +236,13 @@ void Map::show()
 			SetConsoleTextAttribute(hConsole, 12);
 			if (this->enemies.size() != 0)
 			{
-				cout << "defeat all enemies to use";
+				cout << "Zabij wszystkich by u¿yæ";
 			}
 			else
 			{
 				cout << "r";
 				SetConsoleTextAttribute(hConsole, 15);
-				cout << ": go down";
+				cout << ": ZejdŸ ni¿ej";
 			}
 		}
 	}

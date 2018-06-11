@@ -12,15 +12,15 @@ Vampire::Vampire(int aPlayer, int dPlayer, int hpPlayer)
 	creatureName = "Wampir";
 	creatureHp = randomHP(randomThings);
 	creatureStunRate = 0;
-	creatureDodgeRate = 5; //dodge
+	creatureDodgeRate = 10; //dodge
 	creatureStrength = randomStrength(randomThings);
 	creatureDefence = randomDefence(randomThings);
 	creatureLifeSteal = 35;  // wampiryzm
 
 	if (aPlayer>25)
 		creatureLifeSteal = 45;  
-	else
-		creatureLifeSteal = 35;  
+	else if(aPlayer>25 && dPlayer>20)
+		creatureLifeSteal = 50;  
 }
 
 Vampire::~Vampire()

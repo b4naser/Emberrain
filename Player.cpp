@@ -25,7 +25,7 @@ int Player::getPlayerHP()
 
 void Player::playerDecreaseHP(int damageTaken)
 {
-	if (damageTaken > playerDefence)
+	if(damageTaken>0)
 		playerHp = playerHp - damageTaken;
 }
 

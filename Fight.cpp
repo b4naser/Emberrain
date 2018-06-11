@@ -12,7 +12,7 @@ bool Fight::isFightEnded()
 
 void Fight::roundLoop()
 {
-	SetConsoleCursorPosition(hConsole, roundLoopPosition);  //usawia cursor RUNDY
+	SetConsoleCursorPosition(hConsole, roundLoopPosition);  //usawia wspó³rzêdne RUNDY
 	round++;
 	cout << "RUNDA " << round;
 
@@ -52,8 +52,8 @@ bool Fight::fightStart()
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 		fightPlayerAttack();
 		setHpBar();
-		if (isFightEnded())
-		{  //warunek zakonczenia
+		if (isFightEnded())//warunek zakonczenia
+		{ 
 			getchar();
 			getchar();
 			return true;
@@ -61,8 +61,8 @@ bool Fight::fightStart()
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_KOLORU_TEXTU_WALKI);
 		fightCreatureAttack();
 		setHpBar();
-		if (isFightEnded())
-		{   //warunek zakonczenia
+		if (isFightEnded())//warunek zakonczenia
+		{   
 			getchar();
 			getchar();
 			return false;
@@ -76,10 +76,9 @@ Fight::~Fight()
 }
 void Fight::clearCombat()
 {
-	//czysci okno walki 
-	short y = 5;
+	short y = 6;
 	COORD x;
-	for (int i = 0; 20>i; i++) {
+	for (int i = 0; 19>i; i++) {
 		x = { actionCOORD_X, y++ };
 		SetConsoleCursorPosition(hConsole, x);
 		std::cout << "                                    ";
@@ -87,7 +86,6 @@ void Fight::clearCombat()
 }
 void Fight::clearErrorField()
 {
-	//czysci tekst ktory pokazuje brak energii
 	fightPosition = { 30, 28 };
 	SetConsoleCursorPosition(hConsole, fightPosition);
 	cout << "                                            ";
@@ -126,7 +124,7 @@ void Fight::leadingUI()
 	std::string gora_belka = " ";
 	std::string mapa = "        ";
 
-	short rysuj = 0;  //zmienna do chodzenia kursorem
+	short rysuj = 0;  //zmienna do przesuwania  kursora
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_INT_KOLORU_TEXTU);
 	for (int i = 0; i < 630; i++) {
@@ -183,9 +181,9 @@ void Fight::setHpBar()
 	short positionEnemyHPbarY = 5;
 
 	COORD temporary = { 14,  positionPlayerHPbarY };  //recznie wpisane cordy hp baru gracza
-	if (player.getPlayerHP() <= 0) {
+	if (player.getPlayerHP() <= 0) {   //jesli gracz ma ¿ycie poni¿ej 0 lub równe 0
 		temporary = { 12,  positionPlayerHPbarY };
-		SetConsoleCursorPosition(hConsole, temporary);  //czyszcze pole hp i wstawiam 0 zamiast ujemnych wartosci./start
+		SetConsoleCursorPosition(hConsole, temporary);  //czyszcze pole hp i wstawiam 0 zamiast ujemnych wartosci
 		cout << "    ";
 		temporary = { 14,  positionPlayerHPbarY };
 		SetConsoleCursorPosition(hConsole, temporary);
@@ -194,6 +192,11 @@ void Fight::setHpBar()
 		fightPosition = { 37,3 };  // Ustawiam kursor do wypisywania koncowego napisu
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		cout << "Przegrana!";
+
+		fightPosition = { 33,4 };  // Ustawiam kursor do wypisywania koncowego napisu
+		SetConsoleCursorPosition(hConsole, fightPosition);
+		cout << "*Wcisnij enter*";
+		
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_INT_KOLORU_TEXTU);
 		fightPosition = { 14, 28 };  //Powrot do pola wyboru 
 		SetConsoleCursorPosition(hConsole, fightPosition);
@@ -210,6 +213,12 @@ void Fight::setHpBar()
 		fightPosition = { 37, 3 };  // Ustawiam kursor do wypisywania koncowego napisu
 		SetConsoleCursorPosition(hConsole, fightPosition);
 		cout << "Wygrana!";
+		
+
+		fightPosition = { 33,4 };  // Ustawiam kursor do wypisywania koncowego napisu
+		SetConsoleCursorPosition(hConsole, fightPosition);
+		cout << "*Wcisnij enter*";
+
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), STALA_INT_KOLORU_TEXTU);
 		fightPosition = { 14, 28 };  //Powrot do pola wyboru 
 		SetConsoleCursorPosition(hConsole, fightPosition);
@@ -411,7 +420,7 @@ void Fight::fightPlayerAttack()
 			if (round % 5 == 0)
 			{
 				clearCombat();
-				actionCOORD_Y = 5;
+				actionCOORD_Y = 6;  //pozycja poczatkowa Y 
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
 			clearErrorField();
@@ -446,7 +455,7 @@ void Fight::fightPlayerAttack()
 			if (round % 5 == 0)
 			{
 				clearCombat();
-				actionCOORD_Y = 5;
+				actionCOORD_Y = 6;
 				fightPosition = { actionCOORD_X, actionCOORD_Y };
 			}
 			clearErrorField();

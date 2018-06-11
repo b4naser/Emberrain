@@ -1,9 +1,9 @@
 #include "Enemy.h"
 
-void Enemy::creatureHpDecrease(int damageDone)
+void Enemy::creatureHpDecrease(int damageTaken)
 {
-	if(damageDone>creatureDefence)
-		creatureHp = creatureHp - damageDone ;
+	if (damageTaken>0)
+		creatureHp = creatureHp - damageTaken ;
 }
 
 int Enemy::getCreatureHp() const 

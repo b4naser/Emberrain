@@ -39,6 +39,9 @@ Game::Game()
 		cout << "SetConsoleWindowInfo: " << GetLastError();
 	}
 
+	//Ustawienie CP
+	SetConsoleCP(852);
+
 	// Ukrycie kursora konsol
 	CONSOLE_CURSOR_INFO curInfo;
 	curInfo.bVisible = false;

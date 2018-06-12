@@ -78,7 +78,7 @@ void Map::show()
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 7);
-	cout << "Maks. Si³a: ";
+	cout << "Maks. Sila: ";
 	SetConsoleTextAttribute(hConsole, 10);
 	cout << this->player->getPlayerStrength();
 
@@ -236,13 +236,13 @@ void Map::show()
 			SetConsoleTextAttribute(hConsole, 12);
 			if (this->enemies.size() != 0)
 			{
-				cout << "Zabij wszystkich by u¿yæ";
+				cout << "Zabij wszystkich by uzyæ";
 			}
 			else
 			{
 				cout << "r";
 				SetConsoleTextAttribute(hConsole, 15);
-				cout << ": ZejdŸ ni¿ej";
+				cout << ": Zejdz nizej";
 			}
 		}
 	}

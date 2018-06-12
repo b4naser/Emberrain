@@ -56,7 +56,7 @@ void Equipment::show()
 
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	SetConsoleTextAttribute(hConsole, 12);
-	cout << "Kryszta³y: " << this->getCrystals();
+	cout << "Krysztaly: " << this->getCrystals();
 
 	cursorPos.Y += 2;
 	SetConsoleCursorPosition(hConsole, cursorPos);
@@ -109,10 +109,10 @@ void Equipment::show()
 	cout << "z: Ulepsz miecz";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "x: Ulepsz zbrojê";
+	cout << "x: Ulepsz zbroje";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
-	cout << "c: Ulepsz tarczê";
+	cout << "c: Ulepsz tarcze";
 	cursorPos.Y += 1;
 	SetConsoleCursorPosition(hConsole, cursorPos);
 	cout << "v: Ulepsz buty";

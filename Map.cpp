@@ -216,7 +216,7 @@ void Map::show()
 							cout << " Minotaurem";
 							break;
 						case 3:
-							cout << "Wampirem";
+							cout << " Wampirem";
 							break;
 						}
 						target = k;
